@@ -41,7 +41,7 @@ namespace BooksWebApp.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var obj = _db.Categories.Single(c => c.Name == category.Name);
+                    var obj = _db.Categories.SingleOrDefault(c => c.Name == category.Name);
                     if (obj == null)
                     {
                         _db.Categories.Add(category);
