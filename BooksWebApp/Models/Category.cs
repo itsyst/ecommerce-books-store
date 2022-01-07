@@ -9,9 +9,9 @@ namespace BooksWebApp.Models
 
         [Required]
         public string Name { get; set; }
-
+        [Display(Name ="Order")]
         public int DisplayOrder { get; set; }
-
+        [Display(Name = "Created Date")]
         public DateTime CreatedDateTime { get; set; } = DateTime.Now;
 
     }
