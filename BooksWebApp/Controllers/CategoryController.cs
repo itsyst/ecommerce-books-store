@@ -49,7 +49,7 @@ namespace BooksWebApp.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("CustomerError", "This category already.");
+                        ModelState.AddModelError("CustomerError", "This category already exists.");
                     }
                 }
             }
