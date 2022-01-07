@@ -1,0 +1,8 @@
+﻿
+@if(TempData["Success"] != null){
+    <h2 class="container text-success mx-4">@TempData["Success"]</h2>
+}
+
+@if(TempData["Error"] != null){
+    <h2 class="container text-danger mx-4">@TempData["Error"]</h2>
+}
