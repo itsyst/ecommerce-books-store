@@ -46,6 +46,7 @@ namespace BooksWebApp.Controllers
                     {
                         _db.Categories.Add(category);
                         _db.SaveChanges();
+                        TempData["Success"] = "Category created successfully.";
                         return RedirectToAction("Index");
                     }
                     else
@@ -97,6 +98,7 @@ namespace BooksWebApp.Controllers
                 {
                     _db.Update(category);
                     await _db.SaveChangesAsync();
+                    TempData["Success"] = "Category upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -139,6 +141,7 @@ namespace BooksWebApp.Controllers
             var category = await _db.Categories.FindAsync(id);
             _db.Categories.Remove(category);
             await _db.SaveChangesAsync();
+            TempData["Success"] = "Category deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 

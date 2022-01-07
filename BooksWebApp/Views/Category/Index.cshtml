@@ -3,6 +3,11 @@
     ViewData["Title"] = "Index";
 }
 
+@if(TempData["Success"] != null){
+    <h2 class="container text-success mx-4">@TempData["Success"]</h2>
+}
+
+
  <div class="container p-3">
     <div class="row-no-gutters pt-4">
         <div>
