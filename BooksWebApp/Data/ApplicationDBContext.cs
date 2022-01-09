@@ -1,7 +1,7 @@
-﻿using BooksWebApp.Models;
+﻿using Books.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BooksWebApp.Data
+namespace Books.Data
 {
     public class ApplicationDBContext:DbContext
     {

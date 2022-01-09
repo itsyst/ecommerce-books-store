@@ -1,5 +1,5 @@
-﻿using BooksWebApp.Data;
-using BooksWebApp.Models;
+﻿using Books.Data;
+using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
