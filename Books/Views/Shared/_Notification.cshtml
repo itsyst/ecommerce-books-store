@@ -1,15 +1,15 @@
 ﻿
 @if(TempData["Success"] != null){
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script type="text/javascript">
-        toastr.success('@TempData["Success"]');
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script type="text/javascript">
+		toastr.success('@TempData["Success"]');
 	</script>
 
 
-    @*<h2 class="container text-success mx-4">@TempData["Success"]</h2>*@
+	@*<h2 class="container text-success mx-4">@TempData["Success"]</h2>*@
 }
 
 @if(TempData["Error"] != null){
-    <h2 class="container text-danger mx-4">@TempData["Error"]</h2>
+	<h2 class="container text-danger mx-4">@TempData["Error"]</h2>
 }

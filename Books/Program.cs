@@ -1,4 +1,4 @@
-using Books.Data;
+using Books.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
