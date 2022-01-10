@@ -1,37 +1,40 @@
 ﻿using Books.Domain.Entities;
-using Books.Data.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Books.Interfaces;
 
 namespace Books.Controllers
 {
 #pragma warning disable CS8604
     public class CategoryController : Controller
     {
-        private readonly ApplicationDBContext _db;
+        private readonly IUnitOfWork<Category> _category;
 
-        public CategoryController(ApplicationDBContext db)
+        public CategoryController(IUnitOfWork<Category> category)
         {
-            _db = db;
+            _category = category;
         }
 
-        public IActionResult Index()
+        // GET: Categories
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> categoryList = _db.Categories;
-            return View(categoryList);
+            IEnumerable <Category> categories = _category.Entity.GetAll();
+            return View(await Task.FromResult(categories));
         }
 
-        // Get
+        // GET: Category/Create
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-        //Post
+        // POST: Category/Create  
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for   
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,DisplayOrder,CreatedDateTime")] Category category)
         {
             try
             {
@@ -42,11 +45,12 @@ namespace Books.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var obj = _db.Categories.SingleOrDefault(c => c.Name == category.Name);
+                    var obj = _category.Entity.GetFirstOrDefault(c => c.Name == category.Name);
                     if (obj == null)
                     {
-                        _db.Categories.Add(category);
-                        _db.SaveChanges();
+                        _category.Entity.Insert(category);
+                        await Task.CompletedTask;
+                        _category.Save();
                         TempData["Success"] = "Category created successfully.";
                         return RedirectToAction("Index");
                     }
@@ -63,8 +67,8 @@ namespace Books.Controllers
 
             return View(category);
         }
-    
-        //Get
+
+        // GET: Employee/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || id == 0)
@@ -72,20 +76,20 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var category = await _db.Categories.FindAsync(id);
-
+            var category = _category.Entity.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(await Task.FromResult(category));
         }
 
-        //Post
-        // POST: Categories/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // POST: Employee/Edit/5  
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for   
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,DisplayOrder,CreatedDateTime")] Category category)
         {
             if (id != category.Id)
@@ -97,8 +101,9 @@ namespace Books.Controllers
             {
                 try
                 {
-                    _db.Update(category);
-                    await _db.SaveChangesAsync();
+                    _category.Entity.Update(category);
+                    await Task.CompletedTask;
+                    _category.Save();
                     TempData["Success"] = "Category upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,7 +122,7 @@ namespace Books.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
+        // GET: Employee/Delete/5  
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,13 +130,13 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var category = await _db.Categories.FirstOrDefaultAsync(c => c.Id == id);
+            var category = _category.Entity.GetFirstOrDefault(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(await Task.FromResult(category));
         }
 
         // POST: Categories/Delete/5
@@ -139,16 +144,17 @@ namespace Books.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _db.Categories.FindAsync(id);
-            _db.Categories.Remove(category);
-            await _db.SaveChangesAsync();
+            var category = _category.Entity.GetById(id);
+            _category.Entity.Delete(category);
+            await Task.CompletedTask;
+            _category.Save();
             TempData["Success"] = "Category deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-            return _db.Categories.Any(c => c.Id == id);
+            return _category.Entity.Exists(id);
         }
     }
 }
