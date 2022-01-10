@@ -1,10 +1,11 @@
-﻿using Books.Data;
-using Books.Models;
+﻿using Books.Domain.Entities;
+using Books.Data.Persistence;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BooksWebApp.Controllers
+namespace Books.Controllers
 {
+#pragma warning disable CS8604
     public class CategoryController : Controller
     {
         private readonly ApplicationDBContext _db;

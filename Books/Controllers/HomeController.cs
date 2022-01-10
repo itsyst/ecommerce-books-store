@@ -1,9 +1,10 @@
-﻿using Books.Models;
+﻿using Books.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace BooksWebApp.Controllers
+namespace Books.Controllers
 {
+# pragma warning disable IDE0052
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
