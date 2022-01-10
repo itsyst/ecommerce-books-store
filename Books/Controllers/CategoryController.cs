@@ -49,8 +49,7 @@ namespace Books.Controllers
                     if (obj == null)
                     {
                         _category.Entity.Insert(category);
-                        await Task.CompletedTask;
-                        _category.Save();
+                        await _category.SaveAsync();
                         TempData["Success"] = "Category created successfully.";
                         return RedirectToAction("Index");
                     }
@@ -102,8 +101,7 @@ namespace Books.Controllers
                 try
                 {
                     _category.Entity.Update(category);
-                    await Task.CompletedTask;
-                    _category.Save();
+                    await _category.SaveAsync();
                     TempData["Success"] = "Category upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -145,9 +143,8 @@ namespace Books.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = _category.Entity.GetById(id);
-            _category.Entity.Delete(category);
-            await Task.CompletedTask;
-            _category.Save();
+            _category.Entity.Delete(category.Id);
+            await _category.SaveAsync();
             TempData["Success"] = "Category deleted successfully.";
             return RedirectToAction(nameof(Index));
         }

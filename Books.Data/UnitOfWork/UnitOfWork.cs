@@ -26,10 +26,10 @@ namespace Books.Data.UnitOfWork
         {
             _context.SaveChanges();
         }
-
-        public async void SaveAsync()
+  
+        Task IUnitOfWork<T>.SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            return _context.SaveChangesAsync();  
         }
     }
 }

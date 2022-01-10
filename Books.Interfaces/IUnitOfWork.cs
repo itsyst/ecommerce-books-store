@@ -10,6 +10,6 @@ namespace Books.Interfaces
     {
         IGenericRepository<T> Entity { get; }
         void Save();
-         
+        Task SaveAsync();
     }
 }
