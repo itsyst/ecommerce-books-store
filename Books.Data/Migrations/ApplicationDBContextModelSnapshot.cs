@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Books.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDBContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
