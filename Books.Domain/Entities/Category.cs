@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Books.Models
+namespace Books.Domain.Entities
 {
+# nullable disable
     public class Category
     {
         [Key]
