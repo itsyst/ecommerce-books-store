@@ -1,54 +1,54 @@
-﻿@model IEnumerable<Category>
+﻿ @model IEnumerable<Books.Domain.Entities.Category>
 @{
     ViewData["Title"] = "Index";
 }
 
- <div class="container p-3">
-    <div class="row-no-gutters pt-4">
-        <div>
-            <h2 class="text-primary">Category List</h2>
-        </div>
-        <div>
-            <a class="btn btn-primary" asp-controller="Category" asp-action="Create">
-                <i class="bi bi-plus-circle"></i> &nbsp; New</a>
+ <div class="container-fluid p-3">
+    <div class="row pt-4">
+        <div class="col-12">
+            <div class="col-6">
+                <h2 class="text-primary">Category List</h2>
+            </div>
+            <div class="col-6 text-right">
+                <a class="btn btn-primary" asp-controller="Category" asp-action="Create">
+                    <i class="bi bi-plus-circle"></i> &nbsp; New</a>
+            </div>
         </div>
     </div>
     <br>
-    <table class="table table-bordered table-striped" >
+    <table class="row table table-striped w-100" >
         <thead>
             <tr>
-                <th>
+                <th scope="col">
                     Name
                 </th> 
-                 <th>
+                <th scope="col">
                     Order
                 </th> 
-                <th>
+                <th scope="col">
                      Created Date
                 </th>
-                <th></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var category in Model)
             {
                 <tr>
-                    <td>
+                    <td width="30%">
                         @category.Name
                     </td>
-                    <td style="30%">
+                    <td width="30%">
                         @category.DisplayOrder
                     </td>
                     <td>
                         @category.CreatedDateTime
                     </td>
-                    <td> 
-                        <div class="w-75">
-                            <a class="btn btn-primary mx-2"asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id"
+                    <td colspan="2" class="text-right">
+                        <a class="btn btn-primary mx-2"asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id"
                         > <i class="bi bi-pencil-square"></i> Edit</a>
                         <a class="btn btn-danger mx-2"asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id"
                         > <i class="bi bi-trash-fill"></i> Delete</a>
-                        </div>
                     </td>
                 </tr>
             }
