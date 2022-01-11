@@ -11,6 +11,8 @@ namespace Books.Data.Persistence
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Cover> Cover { get; set; }
+
 
     }
 }
