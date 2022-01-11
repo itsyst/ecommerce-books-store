@@ -10,7 +10,7 @@ namespace Books.Data.Repository
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
-        private DbSet<T> _table;
+        private readonly DbSet<T> _table;
 
         public GenericRepository(ApplicationDbContext context)
         {
@@ -100,7 +100,7 @@ namespace Books.Data.Repository
 
         public bool Exists(object id)
         {
-            return _context.Find((Type)id) == null ? false : true;
+            return _context.Find((Type)id) != null;
         }
     }
 }
