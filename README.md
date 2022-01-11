@@ -1,6 +1,6 @@
 
 <h1 align="left">
-  Books-Rental-Store
+  Ecommerce-Books-Store
 </h1>
 
 Build a simple CRUD application ASP.NET Core  MVC  .NET 6
