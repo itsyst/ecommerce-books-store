@@ -1,0 +1,62 @@
+﻿@model Books.Domain.Entities.Author
+ 
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Author</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+    </dl>
+    <dl class="row">
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dd class="col-sm-2">
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a> |
+    <a asp-action="Index" class="btn btn-outline-info">Back to List</a>
+</div>
+
+@if(Model.Products.Count != 0)
+{
+    <div class="mt-3">
+    <h4>Books</h4>
+    <hr />
+    <table class="table table-hover w-50">
+        <thead>
+            <tr class="bg-light">
+                <th scope="col">
+                    @Html.DisplayName("Title")
+                </th>
+             </tr>
+        </thead>
+        <tbody>
+            @foreach (var produt in Model.Products.ToList())
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => produt.Title)
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+
+}
