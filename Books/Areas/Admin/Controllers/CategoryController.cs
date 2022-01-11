@@ -5,7 +5,6 @@ using Books.Interfaces;
 
 namespace Books.Controllers
 {
-#pragma warning disable CS8604
     [Area("Admin")]
     public class CategoryController : Controller
     {

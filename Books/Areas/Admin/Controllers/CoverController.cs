@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Books.Areas.Admin.Controllers
 {
-#pragma warning disable CS8604
     [Area("Admin")]
     public class CoverController : Controller
     {
