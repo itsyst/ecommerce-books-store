@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Books.Data.Migrations
 {
-    public partial class AddCategoryToDatabase : Migration
+    public partial class AddCategoriesToDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
