@@ -39,6 +39,7 @@ namespace Books.Data.Repository
             return query.ToList();
         }
 
+
         public T GetById(object id)
         {
             return _table.Find(id);
@@ -46,6 +47,7 @@ namespace Books.Data.Repository
 
         public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
         {
+
             if (tracked)
             {
                 IQueryable<T> query = _table;
