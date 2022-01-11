@@ -5,6 +5,7 @@ using System.Diagnostics;
 namespace Books.Controllers
 {
 # pragma warning disable IDE0052
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
