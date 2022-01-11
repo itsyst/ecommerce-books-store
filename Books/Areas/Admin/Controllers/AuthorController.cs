@@ -62,8 +62,8 @@ namespace Books.Controllers
             return View(author);
         }
 
- 
-        // GET: Employees/Details/5
+
+        // GET: Author/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -88,13 +88,13 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var category = _author.Entity.GetFirstOrDefault(c => c.Id == id);
-            if (category == null)
+            var author = _author.Entity.GetFirstOrDefault(c => c.Id == id);
+            if (author == null)
             {
                 return NotFound();
             }
 
-            return View(await Task.FromResult(category));
+            return View(await Task.FromResult(author));
         }
 
         // POST: Author/Edit/5  
@@ -115,7 +115,7 @@ namespace Books.Controllers
                 {
                     _author.Entity.Update(author);
                     await _author.SaveAsync();
-                    TempData["Success"] = "Category upaded successfully.";
+                    TempData["Success"] = "author upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
