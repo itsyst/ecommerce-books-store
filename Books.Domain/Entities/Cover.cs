@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace Books.Domain.Entities
 {
+    [Table("Covers")]
     public class Cover
     {
         [Key]
