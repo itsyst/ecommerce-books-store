@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220110171744_AddCoverToDatabase")]
-    partial class AddCoverToDatabase
+    [Migration("20220111174124_AddCoversToDatabase")]
+    partial class AddCoversToDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,7 +62,7 @@ namespace Books.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cover");
+                    b.ToTable("Covers");
                 });
 #pragma warning restore 612, 618
         }

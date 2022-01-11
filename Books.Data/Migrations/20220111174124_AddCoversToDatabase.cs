@@ -4,12 +4,12 @@
 
 namespace Books.Data.Migrations
 {
-    public partial class AddCoverToDatabase : Migration
+    public partial class AddCoversToDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Cover",
+                name: "Covers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -18,14 +18,14 @@ namespace Books.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cover", x => x.Id);
+                    table.PrimaryKey("PK_Covers", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cover");
+                name: "Covers");
         }
     }
 }
