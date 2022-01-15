@@ -2,17 +2,16 @@
 
 namespace Books.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IGenericRepository<T> where T : class 
     {
-        IEnumerable<T> GetAll();
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
-        T GetById(object id);
-        T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true);
-        void Insert(T entity);
-        void Update(T entity);
-        void Delete(object id);
-        void DeleteRange(IEnumerable<T> entity);
-        bool Exists(object id);
+        Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null);
+        Task<T> GetByIdAsync(object id);
+        Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true);
+        Task<bool> InsertAsync(T entity);
+        Task<bool> UpdateAsync(T entity);
+        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteRangeAsync(IEnumerable<T> entity);
+        Task<bool> ExistsAsync(object id);
 
     }
 }

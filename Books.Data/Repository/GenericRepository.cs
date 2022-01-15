@@ -2,27 +2,23 @@
 using System.Linq.Expressions;
 using Books.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
-
+  
 namespace Books.Data.Repository
 {
 #pragma warning disable CS8603
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class 
     {
         private readonly ApplicationDbContext _context;
-        private readonly DbSet<T> _table;
+        internal readonly DbSet<T> _table;
 
         public GenericRepository(ApplicationDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context)); ;
-            _table = _context.Set<T>();
-        }
-        public IEnumerable<T> GetAll()
-        {
-            return _table.AsEnumerable().ToList();
+            _context = context;
+            _table = context.Set<T>();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null)
         {
             IQueryable<T> query = _table;
             if (filter != null)
@@ -36,18 +32,22 @@ namespace Books.Data.Repository
                     query = query.Include(includeProp);
                 }
             }
-            return query.ToList();
+            if (orderBy != null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+
+            return await query.ToListAsync();
         }
 
-
-        public T GetById(object id)
+        public virtual async Task<T> GetByIdAsync(object id)
         {
-            return _table.Find(id);
+             return await _table.FindAsync(id);
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
+        public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
         {
-
+ 
             if (tracked)
             {
                 IQueryable<T> query = _table;
@@ -60,7 +60,8 @@ namespace Books.Data.Repository
                         query = query.Include(includeProp);
                     }
                 }
-                return query.FirstOrDefault();
+
+                return await query.FirstOrDefaultAsync();
             }
             else
             {
@@ -74,35 +75,46 @@ namespace Books.Data.Repository
                         query = query.Include(includeProp);
                     }
                 }
-                return query.FirstOrDefault();
+
+                return await query.FirstOrDefaultAsync();
             }
+ 
         }
 
-        public void Insert(T entity)
+        public virtual async Task<bool> InsertAsync(T entity)
         {
-            _table.Add(entity);
+            await _table.AddAsync(entity);
+
+            return true;
         }
 
-        public void Delete(object id)
-        {
-            T existing = GetById(id);
-            _table.Remove(existing);
-        }
-
-        public void DeleteRange(IEnumerable<T> entity)
-        {
-            _table.RemoveRange(entity);
-        }
-
-        public void Update(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
             _table.Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
+
+            return await Task.FromResult(true);
+
         }
 
-        public bool Exists(object id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            return _context.Find((Type)id) != null;
+            T existing = await GetByIdAsync(id);
+            if (existing == null) return false;
+            _table.Remove(existing);
+
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> DeleteRangeAsync(IEnumerable<T> entity)
+        {
+            _table.RemoveRange(entity);
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> ExistsAsync(object id)
+        {
+            return await _context.FindAsync((Type)id) != null;
         }
     }
 }

@@ -1,35 +1,42 @@
 ﻿using Books.Data.Persistence;
 using Books.Data.Repository;
 using Books.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Books.Data.UnitOfWork
 {
 
 # nullable disable
-    public class UnitOfWork<T> : IUnitOfWork<T> where T : class
+    public class UnitOfWork<T> : IUnitOfWork<T> where T : class 
     {
         private readonly ApplicationDbContext _context;
-        private IGenericRepository<T> _entity;
+        public IGenericRepository<T> _entity;
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
-        public IGenericRepository<T> Entity
+
+    public IGenericRepository<T> Entity
         {
+
             get
             {
-                return _entity ??= new GenericRepository<T>(_context);
+               return _entity ??= new GenericRepository<T>(_context);
             }
+
         }
 
-        public void Save()
+        public async Task CompleteAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
-  
-        Task IUnitOfWork<T>.SaveAsync()
+ 
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChangesAsync();  
+            await _context.SaveChangesAsync();
+            return true;
         }
+
+
     }
 }
