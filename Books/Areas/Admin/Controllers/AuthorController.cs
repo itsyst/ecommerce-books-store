@@ -18,8 +18,8 @@ namespace Books.Controllers
         // GET: Author
         public async Task<IActionResult> Index()
         {
-            IEnumerable <Author> authors = _author.Entity.GetAll(includeProperties: "Products").ToList();
-            return View(await Task.FromResult(authors));
+            var authors = await _author.Entity.GetAllAsync(includeProperties: "Products");
+            return View(authors);
         }
 
         // GET: Author/Create
@@ -40,11 +40,12 @@ namespace Books.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var obj = _author.Entity.GetFirstOrDefault(c => c.FullName == author.FullName);
+                    var obj = await _author.Entity.GetFirstOrDefaultAsync(c => c.Id == author.Id);
                     if (obj == null)
                     {
-                        _author.Entity.Insert(author);
+                        await _author.Entity.InsertAsync(author);
                         await _author.SaveAsync();
+                        await _author.CompleteAsync();
                         TempData["Success"] = "Author created successfully.";
                         return RedirectToAction("Index");
                     }
@@ -71,7 +72,7 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            Author autor = _author.Entity.GetFirstOrDefault(a => a.Id == id, includeProperties: "Products");
+            Author autor = await _author.Entity.GetFirstOrDefaultAsync(a => a.Id == id, includeProperties: "Products");
 
             if (autor == null)
             {
@@ -88,7 +89,7 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var author = _author.Entity.GetFirstOrDefault(c => c.Id == id);
+            var author = await _author.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (author == null)
             {
                 return NotFound();
@@ -113,13 +114,14 @@ namespace Books.Controllers
             {
                 try
                 {
-                    _author.Entity.Update(author);
+                    await _author.Entity.UpdateAsync(author);
                     await _author.SaveAsync();
+                    await _author.CompleteAsync();
                     TempData["Success"] = "author upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AuthorExists(author.Id))
+                    if (await AuthorExists(author.Id))
                     {
                         return NotFound();
                     }
@@ -141,7 +143,7 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            Author author = _author.Entity.GetFirstOrDefault(c => c.Id == id);
+            Author author = await _author.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (author == null)
             {
                 return NotFound();
@@ -155,16 +157,17 @@ namespace Books.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var author = _author.Entity.GetById(id);
-            _author.Entity.Delete(author.Id);
+            var author = await _author.Entity.GetByIdAsync(id);
+            await _author.Entity.DeleteAsync(author.Id);
             await _author.SaveAsync();
+            await _author.CompleteAsync();
             TempData["Success"] = "Author deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AuthorExists(int id)
+        private async Task<bool> AuthorExists(int id)
         {
-            return _author.Entity.Exists(id);
+            return await _author.Entity.ExistsAsync(id);
         }
     }
 }
