@@ -17,7 +17,7 @@ namespace Books.Domain.Entities
 
         [Display(Name = "Created Date")]
         [DataType(DataType.Date)]
-        public DateTime CreatedDateTime { get; set; } = DateTime.Now;
+        public DateTime? CreatedDateTime { get; set; } = DateTime.Now;
 
     }
 }
