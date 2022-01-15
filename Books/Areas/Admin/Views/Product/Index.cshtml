@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Index";
+#pragma warning disable
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Products</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="Product" asp-action="Upsert">
+                <i class="bi bi-plus-circle"></i> &nbsp; New
+            </a>
+        </div>
+    </div>
+    <br>
+    <table class="table table-striped table-hover w-100">
+        <thead>
+            <tr>
+                <th scope="col">
+                    @Html.DisplayName("Title")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("ISBN")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("Author")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("Category")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("Price")
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
