@@ -18,7 +18,8 @@ namespace Books.Areas.Admin.Controllers
         // GET: CoverController
         public async Task<ActionResult> Index()
         {
-            return View(await Task.FromResult(_cover.Entity.GetAll()));
+            IEnumerable<Cover> covers = await _cover.Entity.GetAllAsync();
+            return View(covers);
         }
 
         // GET: CoverController/Create
@@ -36,8 +37,9 @@ namespace Books.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _cover.Entity.Insert(cover);
+                    await _cover.Entity.InsertAsync(cover);
                     await _cover.SaveAsync();
+                    await _cover.CompleteAsync();
                     TempData["Success"] = "Cover created successfully.";
                     return RedirectToAction(nameof(Index));
                 }
@@ -58,13 +60,13 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var cover = _cover.Entity.GetFirstOrDefault(c => c.Id == id);
+            var cover = await _cover.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (cover == null)
             {
                 return NotFound();
             }
 
-            return View(await Task.FromResult(cover));
+            return View(cover);
         }
 
         // POST: CoverController/Edit/5
@@ -81,13 +83,14 @@ namespace Books.Areas.Admin.Controllers
             {
                 try
                 {
-                    _cover.Entity.Update(cover);
+                    await _cover.Entity.UpdateAsync(cover);
                     await _cover.SaveAsync();
+                    await _cover.CompleteAsync();
                     TempData["Success"] = "Category upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CoverExists(cover.Id))
+                    if (await CoverExists(cover.Id))
                     {
                         return NotFound();
                     }
@@ -110,13 +113,13 @@ namespace Books.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var cover = _cover.Entity.GetFirstOrDefault(c => c.Id == id);
+            var cover = await _cover.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (cover == null)
             {
                 return NotFound();
             }
 
-            return View(await Task.FromResult(cover));
+            return View(cover);
         }
 
         // POST: CoverController/Delete/5
@@ -126,9 +129,10 @@ namespace Books.Areas.Admin.Controllers
         {
             try
             {
-                var cover = _cover.Entity.GetById(id);
-                _cover.Entity.Delete(cover.Id);
+                var cover = await _cover.Entity.GetByIdAsync(id);
+                await _cover.Entity.DeleteAsync(cover.Id);
                 await _cover.SaveAsync();
+                await _cover.CompleteAsync();
                 TempData["Success"] = "Category deleted successfully.";
                 return RedirectToAction(nameof(Index));
             }
@@ -138,9 +142,9 @@ namespace Books.Areas.Admin.Controllers
             }
         }
 
-        private bool CoverExists(int id)
+        private async Task<bool> CoverExists(int id)
         {
-            return _cover.Entity.Exists(id);
+            return await _cover.Entity.ExistsAsync(id);
         }
     }
 }
