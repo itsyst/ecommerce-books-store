@@ -15,7 +15,7 @@ namespace Books.Domain.Entities
         [Required]
         [Display(Name = "Full Name")]
         [MaxLength(255)]
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         public ICollection<Product>? Products { get; set; }
     }
