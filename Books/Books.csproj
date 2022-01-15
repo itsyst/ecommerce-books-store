@@ -30,4 +30,8 @@
     <ProjectReference Include="..\Books.Domain\Books.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\" />
+  </ItemGroup>
+
 </Project>
