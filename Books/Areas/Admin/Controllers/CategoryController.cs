@@ -18,8 +18,8 @@ namespace Books.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            IEnumerable <Category> categories = _category.Entity.GetAll();
-            return View(await Task.FromResult(categories));
+            IEnumerable<Category> categories = await _category.Entity.GetAllAsync();
+            return View(categories);
         }
 
         // GET: Category/Create
@@ -34,7 +34,7 @@ namespace Books.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,DisplayOrder,CreatedDateTime")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,DisplayOrder")] Category category)
         {
             try
             {
@@ -45,11 +45,12 @@ namespace Books.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    var obj = _category.Entity.GetFirstOrDefault(c => c.Name == category.Name);
+                    var obj = await _category.Entity.GetFirstOrDefaultAsync(c => c.Id == category.Id);
                     if (obj == null)
                     {
-                        _category.Entity.Insert(category);
+                        await _category.Entity.InsertAsync(category);
                         await _category.SaveAsync();
+                        await _category.CompleteAsync();
                         TempData["Success"] = "Category created successfully.";
                         return RedirectToAction("Index");
                     }
@@ -75,7 +76,7 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var category = _category.Entity.GetFirstOrDefault(c => c.Id == id);
+            var category = await _category.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -100,13 +101,14 @@ namespace Books.Controllers
             {
                 try
                 {
-                    _category.Entity.Update(category);
+                    await _category.Entity.UpdateAsync(category);
                     await _category.SaveAsync();
+                    await _category.CompleteAsync();
                     TempData["Success"] = "Category upaded successfully.";
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (await CategoryExists(category.Id))
                     {
                         return NotFound();
                     }
@@ -128,7 +130,7 @@ namespace Books.Controllers
                 return NotFound();
             }
 
-            var category = _category.Entity.GetFirstOrDefault(c => c.Id == id);
+            var category = await _category.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -142,16 +144,17 @@ namespace Books.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = _category.Entity.GetById(id);
-            _category.Entity.Delete(category.Id);
+            var category = await _category.Entity.GetByIdAsync(id);
+            await _category.Entity.DeleteAsync(category.Id);
             await _category.SaveAsync();
+            await _category.CompleteAsync();
             TempData["Success"] = "Category deleted successfully.";
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private async Task<bool> CategoryExists(int id)
         {
-            return _category.Entity.Exists(id);
-        }
+            return await _category.Entity.ExistsAsync(id);
+         }
     }
 }
