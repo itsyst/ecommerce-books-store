@@ -48,7 +48,7 @@ namespace Books.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("CreatedDateTime")
+                    b.Property<DateTime?>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("DisplayOrder")
@@ -61,27 +61,6 @@ namespace Books.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Books.Domain.Entities.Copy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Copies");
                 });
 
             modelBuilder.Entity("Books.Domain.Entities.Cover", b =>
@@ -120,7 +99,6 @@ namespace Books.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISBN")
@@ -129,6 +107,9 @@ namespace Books.Data.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InStock")
+                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -147,17 +128,6 @@ namespace Books.Data.Migrations
                     b.HasIndex("CoverId");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Books.Domain.Entities.Copy", b =>
-                {
-                    b.HasOne("Books.Domain.Entities.Product", "Product")
-                        .WithMany("Copies")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Books.Domain.Entities.Product", b =>
@@ -190,11 +160,6 @@ namespace Books.Data.Migrations
             modelBuilder.Entity("Books.Domain.Entities.Author", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("Books.Domain.Entities.Product", b =>
-                {
-                    b.Navigation("Copies");
                 });
 #pragma warning restore 612, 618
         }
