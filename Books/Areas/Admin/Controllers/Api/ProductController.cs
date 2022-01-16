@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers.Api
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     [Produces("application/json")]
     public class ProductController : ControllerBase
     {

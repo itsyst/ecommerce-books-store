@@ -19,6 +19,8 @@ builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
+builder.Services.AddApiVersioning();
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Books", Version = "v1" });
