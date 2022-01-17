@@ -51,7 +51,7 @@ namespace Books.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("AuthorError", "This author already exists.");
+                        ModelState.AddModelError("Error", "An unexpected error occurred!");
                     }
                 }
             }
