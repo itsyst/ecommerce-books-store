@@ -3,6 +3,7 @@ using Books.Domain.ViewModels;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -103,8 +104,8 @@ namespace Books.Areas.Admin.Controllers
                         file.CopyTo(fileStreams);
                     }
                     model.Product.ImageUrl = @"\images\products\" + fileName + extension;
-
                 }
+
                 if (model.Product.Id == 0)
                 {
                     await _product.Entity.InsertAsync(model.Product);
@@ -117,9 +118,10 @@ namespace Books.Areas.Admin.Controllers
                 await _product.SaveAsync();
                 await _product.CompleteAsync();
                 TempData["Success"] = "Product created successfully.";
-
+                 
                 return RedirectToAction(nameof(Index));
             }
+
             return View(model);
         }
     }
