@@ -57,7 +57,7 @@ namespace Books.Controllers
             }
             catch
             {
-                ModelState.AddModelError("Error", "An Expected Error!");
+                ModelState.AddModelError("Error", "An unexpected error occurred!");
             }
 
             return View(author);
