@@ -54,7 +54,8 @@ $(document).ready(function () {
             {
                 data: "title",
                 render: function(data, type, product) {
-                    return "<a href='/product/upsert/" + product.id + "'>" + product.title + "</a>";
+                    return "<a href='/Admin/Product/Upsert/" + product.id + "'>" + product.title + "</a>";
+                    
                 }
             },
             {
@@ -71,8 +72,8 @@ $(document).ready(function () {
             },
             {
                 data: "id",
-                render: function(data) {
-                    return "<a class='btn-link js-delete' data-product-id=" + data + "><i class='bi bi-trash-fill' style='color: #ff4136; cursor:pointer;'></a>";
+                render: function(data, type, product) {
+                    return "<a class='btn-link js-delete' data-product-id=" + product.id + "><i class='bi bi-trash-fill' style='color: #ff4136; cursor:pointer;'></a>";
                 },
                 className: 'text-light dt-body-center'
             }
