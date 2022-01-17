@@ -48,6 +48,28 @@ namespace Books.Areas.Admin.Controllers.Api
         }
 
 
+        // PUT /api/products/1
+        [HttpPut]
+        public async Task<IActionResult> Upsert(int id, ProductDto productDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var productInDb = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == id, includeProperties: "Category,Author,Cover");
+
+            if (productInDb == null)
+                return NotFound();
+
+            var _mappedProduct = _mapper.Map(productDto, productInDb);
+
+            await _product.Entity.UpdateAsync(_mappedProduct);
+            await _product.SaveAsync();
+            await _product.CompleteAsync();
+
+            return Ok();
+        }
+
+
         //GET: / api / products/ id
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -57,18 +79,19 @@ namespace Books.Areas.Admin.Controllers.Api
             if (productInDb == null)
                 return NotFound();
 
-            string oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productInDb.ImageUrl.TrimStart('\\'));
-
-            if (System.IO.File.Exists(oldImagePath))
+            if (productInDb.ImageUrl != null)
             {
-                System.IO.File.Delete(oldImagePath);
+                string oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productInDb.ImageUrl.TrimStart('\\'));
+              
+                if (System.IO.File.Exists(oldImagePath))
+                    System.IO.File.Delete(oldImagePath);
             }
 
             await _product.Entity.DeleteAsync(productInDb.Id);
             await _product.SaveAsync();
             await _product.CompleteAsync();
 
-            return Ok(productInDb);
+            return Ok(productInDb);      
         }
     }
 }
