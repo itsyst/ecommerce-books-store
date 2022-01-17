@@ -4,13 +4,14 @@
     #pragma warning disable
 }
 
-<h1>@(Model.Product.Id !=0? "Update" : "Create") Product</h1>
+<h2 class="text-primary">@(Model.Product.Id !=0? "Update" : "Create") Product</h2>
 
 
 <div class="col-md-8">
     <form method="post" asp-action="Upsert" enctype="multipart/form-data">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <input type="hidden" asp-for="Product.Id" />
+        <input asp-for="Product.Id" hidden />
+        <input asp-for="Product.ImageUrl" hidden />
         <div class="form-group mb-3 col-12  ">
             <label asp-for="Product.Title" class="control-label"></label>
             <input asp-for="Product.Title" class="form-control" />
