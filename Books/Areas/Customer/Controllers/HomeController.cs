@@ -1,4 +1,5 @@
 ﻿using Books.Domain.Entities;
+using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,16 +9,19 @@ namespace Books.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
+        private readonly IUnitOfWork<Product> _product;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IUnitOfWork<Product> product, ILogger<HomeController> logger)
         {
+            _product = product;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var product = await _product.Entity.GetAllAsync(includeProperties: "Category,Author,Cover");
+            return View(product);
         }
 
         public IActionResult Privacy()
