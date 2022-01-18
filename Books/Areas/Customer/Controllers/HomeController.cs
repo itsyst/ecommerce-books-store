@@ -1,4 +1,5 @@
 ﻿using Books.Domain.Entities;
+using Books.Domain.ViewModels;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -22,6 +23,18 @@ namespace Books.Controllers
         {
             var product = await _product.Entity.GetAllAsync(includeProperties: "Category,Author,Cover");
             return View(product);
+        }
+        
+        public async Task<IActionResult> Details(int? id)
+        {
+
+            ShoppingCart cart = new()
+            {
+                Product = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == id, includeProperties: "Category,Author,Cover"),
+                Count = 1
+            };
+
+            return View(cart);
         }
 
         public IActionResult Privacy()

@@ -1,0 +1,67 @@
+﻿@model Books.Domain.ViewModels.ShoppingCart
+
+@{
+    ViewData["Title"] = "Product details";
+    #pragma warning disable
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white" style="background:linear-gradient(to right, #6f444d 0%, #f6edb5 100%);">
+                        <p class="card-text">
+                            <h5 class="card-title">
+                                @Model.Product.Title
+                            </h5>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img class="w-100" src="@Model.Product.ImageUrl" alt="@Model.Product.Title">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">@Model.Product.Description</p>
+                        <p class="card-text"><b class="text-primary">Title: </b> @Model.Product.Title</p>
+                        <p class="card-text"><b class="text-primary">ISBN : </b> @Model.Product.ISBN</p>
+                        <p class="card-text"><b class="text-primary">Category: </b>@Model.Product.Category.Name</p>
+                        <p class="card-text"><b class="text-primary">Author: </b> @Model.Product.Author.FullName</p>
+                        <p class="card-text mt-2"><b class="text-primary">Price: </b><strike>@Model.Product.Price.ToString("c")</strike></p>
+                        <p class="card-text text-md font-weight-bold text-warning" ><b>As low as: </b>@((Model.Product.Price)/2) kr</p>
+                    </div>
+                    <div class=" row card-text mx-1">
+                        <b class="text-primary col-md-2">Quantity </b>
+                        <input class="col-md-4 mb-1 mx-2" asp-for="Count" class="form-control" />
+                    </div>        
+                </div>
+                <div class="col-md-12">
+                    <div class="card-footer">
+                        <p class="row justify-content-sm-between">
+                            <a class="btn btn-outline-primary" style="width:40%;" asp-action="Index">
+                                    Back to List
+                            </a>
+                                <a class="btn btn-success text-white" style="width:40%;" 
+                                asp-controller=" " 
+                                asp-action=" " asp-route-id="@Model.Product.Id"><i class="bi bi-cart-plus"></i> Add to Cart
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+
+    function getTotal(count){
+        var price = @Model.Product.Price;
+        var total = price * count;
+        return total;
+    }
+ 
+</script>
+}
