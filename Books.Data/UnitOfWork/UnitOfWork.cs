@@ -15,8 +15,8 @@ namespace Books.Data.UnitOfWork
         {
             _context = context;
         }
-
-    public IGenericRepository<T> Entity
+        
+        public IGenericRepository<T> Entity
         {
 
             get
