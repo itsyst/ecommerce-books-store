@@ -3,7 +3,8 @@ using Books.Domain.ViewModels;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace Books.Areas.Admin.Controllers
 {
@@ -99,11 +100,16 @@ namespace Books.Areas.Admin.Controllers
                         }
                     }
 
+
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
                     {
                         file.CopyTo(fileStreams);
                     }
+ 
                     model.Product.ImageUrl = @"\images\products\" + fileName + extension;
+ 
+
+                    ResizeImage(file, Path.Combine(uploads, fileName + extension));
                 }
 
                 if (model.Product.Id == 0)
@@ -121,8 +127,14 @@ namespace Books.Areas.Admin.Controllers
                  
                 return RedirectToAction(nameof(Index));
             }
-
             return View(model);
+        }
+
+        public void ResizeImage(IFormFile file, string path)
+        {
+            using var image = Image.Load(file.OpenReadStream());
+            image.Mutate(x => x.Resize(456, 650));
+            image.Save(path);
         }
     }
 }
