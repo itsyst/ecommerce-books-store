@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers.Api
 {
-#pragma warning disable CS8602
-
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
