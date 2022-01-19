@@ -75,8 +75,8 @@ $(document).ready(function () {
             {
                 data: "id",
                 render: function(data, type, company) {
-                    return `<a href="/Admin/Company/Upsert?id=${company.id}"> <i class='bi bi-pencil-square' style='color:#75caeb; cursor:pointer;'></i></a>
-                            <a class='btn-link js-delete' data-company-id="${company.id}"><i class='bi bi-trash-fill' style='color: #ff4136; cursor:pointer;'></a>`
+                    return `<a class='btn-link' href='/Admin/Company/Upsert/${company.id}'><i class='bi bi-pencil-square' style='color:#75caeb; cursor:pointer;'></i></a>
+                            <a class='btn-link js-delete' data-company-id=${company.id}><i class='bi bi-trash-fill' style='color: #ff4136; cursor:pointer;'></a>`
                 },
                 className: 'text-light dt-body-center'
             }
@@ -94,7 +94,7 @@ $(document).ready(function () {
         }).then((result) => {
              if (result.isConfirmed) {
                  $.ajax({
-                     url: "/api/v1/companies/" + button.attr("data-product-id"),
+                     url: "/api/v1/companies/" + button.attr("data-company-id"),
                      type: 'DELETE',
                      dataType: "json",
                      dataSrc:"",
