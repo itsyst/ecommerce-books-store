@@ -7,7 +7,7 @@ namespace Books.Data.UnitOfWork
 {
 
 # nullable disable
-    public class UnitOfWork<T> : IDisposable, IUnitOfWork<T> where T : class 
+    public class UnitOfWork<T> : IUnitOfWork<T> where T : class 
     {
         private readonly ApplicationDbContext _context;
         public IGenericRepository<T> _entity;
