@@ -1,0 +1,69 @@
+﻿@model Books.Domain.Entities.Company
+
+@{
+	#pragma warning disable
+}
+
+<h2 class="text-primary">@(Model.Id !=0? "Update" : "Create") Company</h2>
+
+
+<div class="row">
+	<div class="col-md-8 mr-2">
+		<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+			<div asp-validation-summary="All" class="text-danger"></div>
+			<input asp-for="Id" hidden />
+			<div class="form-group mb-3 col-12  ">
+				<label asp-for="Name" class="control-label"></label>
+				<input asp-for="Name" class="form-control" />
+				<span asp-validation-for="Name" class="text-danger"></span>
+			</div>
+			<div class="form-group mb-3 col-12  ">
+				<label asp-for="StreetAddress" class="control-label"></label>
+				<input asp-for="StreetAddress" class="form-control" />
+				<span asp-validation-for="StreetAddress" class="text-danger"></span>
+			</div>
+			<div class="form-group row">
+				<div class="form-group mb-3 col-6">
+					<label asp-for="City" class="control-label"></label>
+					<input asp-for="City" class="form-control" />
+					<span asp-validation-for="City" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3 col-6">
+					<label asp-for="State" class="control-label"></label>
+					<input asp-for="State" class="form-control" />
+					<span asp-validation-for="State" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3 col-6">
+					<label asp-for="PostalCode" class="control-label"></label>
+					<input asp-for="PostalCode" class="form-control" />
+					<span asp-validation-for="PostalCode" class="text-danger"></span>
+				</div>
+				<div class="form-group mb-3 col-6">
+					<label asp-for="PhoneNumber" class="control-label"></label>
+					<input asp-for="PhoneNumber" class="form-control" />
+					<span asp-validation-for="PhoneNumber" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="form-group mt-3">
+				@if (Model.Id != 0)
+				{
+					<input type="submit" value="Update" class="btn btn-primary" />
+				}
+				else
+				{
+					<input type="submit" onclick="return ValideInputWithImage()" value="Create" class="btn btn-primary" />
+				}
+				<button asp-action="Index" class="btn btn-secondary">Back to list</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+
+
+@section Scripts {
+	@{
+	<partial name="_ValidationScriptsPartial" />
+	}
+}
+
