@@ -1,4 +1,5 @@
 ﻿using Books.Domain.Entities;
+using BulkyBook.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ namespace Books.Data.Persistence
         public DbSet<Cover> Covers { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Author> Authors { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
     }
 }
