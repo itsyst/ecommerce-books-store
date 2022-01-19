@@ -46,7 +46,7 @@ namespace Books.Areas.Admin.Controllers.Api
 
         // PUT /api/products/1
         [HttpPut]
-        public async Task<IActionResult> Upsert(int id, CompanyDto companyDto)
+        public async Task<IActionResult> UpsertProduct(int id, CompanyDto companyDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
