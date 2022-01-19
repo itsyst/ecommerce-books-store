@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <p class="card-text">@Model.Product.Description</p>
+                        <p class="card-text">@Html.Raw(@Model.Product.Description)</p>
                         <p class="card-text"><b class="text-primary">Title: </b> @Model.Product.Title</p>
                         <p class="card-text"><b class="text-primary">ISBN : </b> @Model.Product.ISBN</p>
                         <p class="card-text"><b class="text-primary">Category: </b>@Model.Product.Category.Name</p>
