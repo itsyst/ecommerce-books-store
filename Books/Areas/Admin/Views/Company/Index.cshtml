@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Index";
+#pragma warning disable
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Companies</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a class="btn btn-primary" asp-controller="Company" asp-action="Upsert">
+                <i class="bi bi-plus-circle"></i> &nbsp; New
+            </a>
+        </div>
+    </div>
+    <br>
+    <table id="companies" class="table table-striped table-hover stripe w-100">
+        <thead>
+            <tr>
+                <th scope="col">
+                    @Html.DisplayName("Name")
+                </th>        
+                <th scope="col">
+                    @Html.DisplayName("Street Address")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("City")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("State")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("Postal Code")
+                </th>
+                <th scope="col">
+                    @Html.DisplayName("Phone Number")
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section scripts
+{
+
+<script>
+$(document).ready(function () {
+    var table = $("#companies").DataTable({
+        ajax: {
+            url: "/api/v1/companies/",
+            type: "GET",
+            dataType: "json",
+            dataSrc:""
+        },
+        columns: [
+            {
+                data: "name",
+            },
+            {
+                data: "streetAddress",
+            },
+            {
+                data: "city",
+            },              
+            {
+                data: "state",
+            },
+            {
+                data: "postalCode",
+            },            
+            {
+                data: "phoneNumber",
+            },
+            {
+                data: "id",
+                render: function(data, type, company) {
+                    return "<a class='btn-link js-delete' data-company-id=" + company.id + "><i class='bi bi-trash-fill' style='color: #ff4136; cursor:pointer;'></a>";
+                },
+                className: 'text-light dt-body-center'
+            }
+        ]
+    });
+    $("#companies").on("click", ".js-delete", function () {
+        var button = $(this);
+        Swal.fire({
+            title: `Are you sure you want to delete this company ?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#5ea2bc',
+            confirmButtonText: 'Confirm'
+        }).then((result) => {
+             if (result.isConfirmed) {
+                 $.ajax({
+                     url: "/api/v1/companies/" + button.attr("data-product-id"),
+                     type: 'DELETE',
+                     dataType: "json",
+                     dataSrc:"",
+                     success: function (data) {
+                         if (data) {
+                             table.ajax.reload();
+                             toastr.success("Company created successfully.");
+                             table.row(button.parents("tr")).remove().draw();
+                          }
+                     }, 
+                     error: function(){
+                        toastr.error("Something went wrong!");
+                     }
+                 })
+             }
+        }).catch(()=>{
+            toastr.error("An unexpected error occurred please try again later !");
+        })
+   }) 
+});
+</script>
+} 
