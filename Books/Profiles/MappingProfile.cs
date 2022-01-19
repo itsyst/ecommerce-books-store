@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Books.Domain.Entities;
 using Books.Dtos;
+using BulkyBook.Models;
 
 namespace Books.Profiles
 {
@@ -10,22 +11,30 @@ namespace Books.Profiles
         {
             // Domain to Dto
             CreateMap<Product, ProductDto>();
-            CreateMap<CategoryDto, CategoryDto>();
+            CreateMap<Category, CategoryDto>();
             CreateMap<Cover, CoverDto>();
-            CreateMap<AuthorDto, AuthorDto>();
+            CreateMap<Author, AuthorDto>();
+            CreateMap<ApplicationUser, ApplicationUserDto>();
+            CreateMap<Company, CompanyDto>();
 
 
             // Dto to Domain
             CreateMap<ProductDto, Product>()
                 .ForMember(p => p.Id, opt => opt.Ignore());
 
-            CreateMap<CategoryDto, Product>()
+            CreateMap<CategoryDto, Category>()
                  .ForMember(p => p.Id, opt => opt.Ignore());
 
-            CreateMap<CoverDto, Product>()
+            CreateMap<CoverDto, Cover>()
                 .ForMember(p => p.Id, opt => opt.Ignore());
 
-            CreateMap<AuthorDto, Product>()
+            CreateMap<AuthorDto, Author>()
+                 .ForMember(p => p.Id, opt => opt.Ignore());            
+            
+            CreateMap<ApplicationUserDto, ApplicationUser>()
+                 .ForMember(p => p.Id, opt => opt.Ignore());            
+            
+            CreateMap<CompanyDto, Company>()
                  .ForMember(p => p.Id, opt => opt.Ignore());
         }
     }
