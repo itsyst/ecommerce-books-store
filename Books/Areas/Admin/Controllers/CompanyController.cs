@@ -57,7 +57,7 @@ namespace Books.Areas.Admin.Controllers
 
                 await _company.SaveAsync();
                 await _company.CompleteAsync();
-                TempData["Success"] = "Company created successfully.";
+                TempData["Success"] = "Company saved successfully.";
 
                 return RedirectToAction(nameof(Index));
             }

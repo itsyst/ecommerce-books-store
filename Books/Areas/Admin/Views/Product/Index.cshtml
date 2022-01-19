@@ -98,7 +98,7 @@ $(document).ready(function () {
                      success: function (data) {
                          if (data) {
                              table.ajax.reload();
-                             toastr.success("Product created successfully.");
+                             toastr.success("Product deleted successfully.");
                              table.row(button.parents("tr")).remove().draw();
                           }
                      }, 
