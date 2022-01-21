@@ -1,9 +1,10 @@
 ﻿using Books.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BulkyBook.Models
+namespace Books.Models
 {
     public class ApplicationUser : IdentityUser
     {
@@ -21,6 +22,7 @@ namespace BulkyBook.Models
         public string? PostalCode { get; set; }
 
         [ForeignKey("CompanyId")]
+        [ValidateNever]
         public Company? Company { get; set; }
         public int CompanyId { get; set; }
     }

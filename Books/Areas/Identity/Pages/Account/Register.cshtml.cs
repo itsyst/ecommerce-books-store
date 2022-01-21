@@ -7,8 +7,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Text.Encodings.Web;
 using Books.Domain.Entities;
+using Books.Models;
 using Books.Utilities;
-using BulkyBook.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -166,6 +166,7 @@ namespace Books.Areas.Identity.Pages.Account
                 user.PostalCode = Input.PostalCode;
                 user.Company = new()
                 {
+                    Id = Input.Company.Id,
                     Name = Input.Company.Name,
                     PhoneNumber = Input.PhoneNumber,
                     StreetAddress = Input.StreetAddress,

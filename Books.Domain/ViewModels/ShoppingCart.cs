@@ -1,10 +1,12 @@
 ﻿using Books.Domain.Entities;
-using BulkyBook.Models;
+using Books.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Books.Domain.ViewModels
 {
+#pragma warning disable CS8618
     public class ShoppingCart
     {
 
@@ -13,7 +15,8 @@ namespace Books.Domain.ViewModels
         public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
-        public Product? Product { get; set; }
+        [ValidateNever]
+        public Product Product { get; set; }
 
 
         [Range(1,1000, ErrorMessage="Please enter a valur between 1 and 1000")]
@@ -23,6 +26,7 @@ namespace Books.Domain.ViewModels
 
 
         [ForeignKey("ApplicationUserId")]
-        public ApplicationUser? ApplicationUser { get; set; }
-    }
+        [ValidateNever]
+         public ApplicationUser ApplicationUser { get; set; }
+     }
 }

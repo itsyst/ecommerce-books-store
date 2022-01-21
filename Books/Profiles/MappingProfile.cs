@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using Books.Domain.Entities;
+using Books.Domain.ViewModels;
 using Books.Dtos;
-using BulkyBook.Models;
+using Books.Models;
 
 namespace Books.Profiles
 {
@@ -16,7 +17,8 @@ namespace Books.Profiles
             CreateMap<Author, AuthorDto>();
             CreateMap<ApplicationUser, ApplicationUserDto>();
             CreateMap<Company, CompanyDto>();
-
+            CreateMap<ShoppingCart, ShoppingCartDto>();
+ 
 
             // Dto to Domain
             CreateMap<ProductDto, Product>()
@@ -36,6 +38,9 @@ namespace Books.Profiles
             
             CreateMap<CompanyDto, Company>()
                  .ForMember(p => p.Id, opt => opt.Ignore());
+
+            CreateMap<ShoppingCartDto, ShoppingCart>()
+               .ForMember(p => p.Id, opt => opt.Ignore());
         }
     }
 }
