@@ -59,7 +59,6 @@ namespace Books.Areas.Admin.Controllers.Api
             var _mappedCompany = _mapper.Map(companyDto, companyInDb);
 
             await _company.Entity.UpdateAsync(_mappedCompany);
-            await _company.SaveAsync();
             await _company.CompleteAsync();
 
             return Ok();
@@ -76,7 +75,6 @@ namespace Books.Areas.Admin.Controllers.Api
                 return NotFound();
 
             await _company.Entity.DeleteAsync(companyInDb.Id);
-            await _company.SaveAsync();
             await _company.CompleteAsync();
 
             return Ok(companyInDb);

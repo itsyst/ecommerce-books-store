@@ -44,7 +44,6 @@ namespace Books.Controllers
                     if (obj == null)
                     {
                         await _author.Entity.InsertAsync(author);
-                        await _author.SaveAsync();
                         await _author.CompleteAsync();
                         TempData["Success"] = "Author created successfully.";
                         return RedirectToAction("Index");
@@ -115,7 +114,6 @@ namespace Books.Controllers
                 try
                 {
                     await _author.Entity.UpdateAsync(author);
-                    await _author.SaveAsync();
                     await _author.CompleteAsync();
                     TempData["Success"] = "author upaded successfully.";
                 }
@@ -159,7 +157,6 @@ namespace Books.Controllers
         {
             var author = await _author.Entity.GetByIdAsync(id);
             await _author.Entity.DeleteAsync(author.Id);
-            await _author.SaveAsync();
             await _author.CompleteAsync();
             TempData["Success"] = "Author deleted successfully.";
             return RedirectToAction(nameof(Index));

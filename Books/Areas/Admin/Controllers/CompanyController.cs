@@ -55,7 +55,6 @@ namespace Books.Areas.Admin.Controllers
                     await _company.Entity.UpdateAsync(company);
                 }
 
-                await _company.SaveAsync();
                 await _company.CompleteAsync();
                 TempData["Success"] = "Company saved successfully.";
 

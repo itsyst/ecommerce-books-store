@@ -49,7 +49,6 @@ namespace Books.Controllers
                     if (obj == null)
                     {
                         await _category.Entity.InsertAsync(category);
-                        await _category.SaveAsync();
                         await _category.CompleteAsync();
                         TempData["Success"] = "Category created successfully.";
                         return RedirectToAction("Index");
@@ -102,7 +101,6 @@ namespace Books.Controllers
                 try
                 {
                     await _category.Entity.UpdateAsync(category);
-                    await _category.SaveAsync();
                     await _category.CompleteAsync();
                     TempData["Success"] = "Category upaded successfully.";
                 }
@@ -146,7 +144,6 @@ namespace Books.Controllers
         {
             var category = await _category.Entity.GetByIdAsync(id);
             await _category.Entity.DeleteAsync(category.Id);
-            await _category.SaveAsync();
             await _category.CompleteAsync();
             TempData["Success"] = "Category deleted successfully.";
             return RedirectToAction(nameof(Index));

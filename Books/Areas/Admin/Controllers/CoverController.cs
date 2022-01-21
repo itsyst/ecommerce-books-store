@@ -38,7 +38,6 @@ namespace Books.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     await _cover.Entity.InsertAsync(cover);
-                    await _cover.SaveAsync();
                     await _cover.CompleteAsync();
                     TempData["Success"] = "Cover created successfully.";
                     return RedirectToAction(nameof(Index));
@@ -84,7 +83,6 @@ namespace Books.Areas.Admin.Controllers
                 try
                 {
                     await _cover.Entity.UpdateAsync(cover);
-                    await _cover.SaveAsync();
                     await _cover.CompleteAsync();
                     TempData["Success"] = "Category upaded successfully.";
                 }
@@ -131,7 +129,6 @@ namespace Books.Areas.Admin.Controllers
             {
                 var cover = await _cover.Entity.GetByIdAsync(id);
                 await _cover.Entity.DeleteAsync(cover.Id);
-                await _cover.SaveAsync();
                 await _cover.CompleteAsync();
                 TempData["Success"] = "Category deleted successfully.";
                 return RedirectToAction(nameof(Index));

@@ -61,7 +61,6 @@ namespace Books.Areas.Admin.Controllers.Api
             var _mappedProduct = _mapper.Map(productDto, productInDb);
 
             await _product.Entity.UpdateAsync(_mappedProduct);
-            await _product.SaveAsync();
             await _product.CompleteAsync();
 
             return Ok();
@@ -86,7 +85,6 @@ namespace Books.Areas.Admin.Controllers.Api
             }
 
             await _product.Entity.DeleteAsync(productInDb.Id);
-            await _product.SaveAsync();
             await _product.CompleteAsync();
 
             return Ok(productInDb);      

@@ -32,11 +32,6 @@ namespace Books.Data.UnitOfWork
             await _context.SaveChangesAsync();
         }
  
-        public async Task<bool> SaveAsync()
-        {
-            await _context.SaveChangesAsync();
-            return true;
-        }
 
         protected virtual void Dispose(bool disposing)
         {

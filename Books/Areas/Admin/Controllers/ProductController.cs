@@ -121,7 +121,6 @@ namespace Books.Areas.Admin.Controllers
                     await _product.Entity.UpdateAsync(model.Product);
                 }
 
-                await _product.SaveAsync();
                 await _product.CompleteAsync();
                 TempData["Success"] = "Product created successfully.";
                  
