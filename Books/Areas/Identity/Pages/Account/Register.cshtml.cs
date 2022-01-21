@@ -3,9 +3,12 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Text.Encodings.Web;
+using Books.Domain.Entities;
 using Books.Utilities;
+using BulkyBook.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -94,27 +97,57 @@ namespace Books.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [MaxLength(55)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; } = string.Empty;
+
+            [Required]
+            [MaxLength(55)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; } = string.Empty;
+
+
+            [Display(Name = "Street Adress")]
+            public string StreetAddress { get; set; }
+
+            public string City { get; set; }
+
+            public string State { get; set; }
+
+            [Display(Name = "Postal Code")]
+            [DataType(DataType.PostalCode)]
+            public string PostalCode { get; set; }
+
+
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Company Name")]
+            public Company Company { get; set; } = null;
+
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            
-           
             foreach (var item in Roles.GetAllRoles)
             {
-                if (! await _roleManager.RoleExistsAsync(item.ToString()))
+                if (!await _roleManager.RoleExistsAsync(item.ToString()))
                 {
                     await _roleManager.CreateAsync(new IdentityRole(item.ToString()));
                 }
 
             }
-  
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
+
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -124,11 +157,32 @@ namespace Books.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                user.Company = new()
+                {
+                    Name = Input.Company.Name,
+                    PhoneNumber = Input.PhoneNumber,
+                    StreetAddress = Input.StreetAddress,
+                    City = Input.City,
+                    State = Input.State,
+                    PostalCode = Input.PostalCode
+                };
+
+           
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _userManager.AddToRoleAsync(user, Roles.RoleType.User.ToString());
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -136,7 +190,7 @@ namespace Books.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId, code, returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -144,7 +198,7 @@ namespace Books.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
                     }
                     else
                     {
@@ -162,16 +216,16 @@ namespace Books.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
