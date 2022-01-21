@@ -1,6 +1,6 @@
 ﻿using Books.Domain.Entities;
 using Books.Domain.ViewModels;
-using BulkyBook.Models;
+using Books.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +15,7 @@ namespace Books.Data.Persistence
         public DbSet<Author> Authors { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
-        public DbSet<ShoppingCart> ShopingCarts { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
