@@ -1,4 +1,5 @@
-﻿using Books.Models;
+﻿using Books.Domain.Entities;
+using Books.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,6 +14,8 @@ namespace Books.Domain.ViewModels
 
         public int ProductId { get; set; }
 
+        public Product Product { get; set; }
+ 
         [Range(1, 1000, ErrorMessage = "Please enter a valur between 1 and 1000")]
         public int Count { get; set; }
 
@@ -21,5 +24,8 @@ namespace Books.Domain.ViewModels
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
-    }
+
+        public IEnumerable<ShoppingCart> ShoppingCarts { get; set; }
+
+     }
 }
