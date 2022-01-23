@@ -1,8 +1,9 @@
 ﻿using Books.Domain.Entities;
-using Books.Domain.ViewModels;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace Books.Controllers
 {
@@ -11,11 +12,16 @@ namespace Books.Controllers
     public class HomeController : Controller
     {
         private readonly IUnitOfWork<Product> _product;
+        private readonly IUnitOfWork<ShoppingCart> _shoppingCart;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IUnitOfWork<Product> product, ILogger<HomeController> logger)
+        public HomeController(
+            IUnitOfWork<Product> product,
+            IUnitOfWork<ShoppingCart> shoppingCart,
+            ILogger<HomeController> logger)
         {
             _product = product;
+            _shoppingCart = shoppingCart;
             _logger = logger;
         }
 
@@ -24,17 +30,34 @@ namespace Books.Controllers
             var product = await _product.Entity.GetAllAsync(includeProperties: "Category,Author,Cover");
             return View(product);
         }
-        
-        public async Task<IActionResult> Details(int? id)
+
+        // GET: Home/Details/5
+        public async Task<IActionResult> Details(int productId)
         {
 
             ShoppingCart cart = new()
             {
-                Product = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == id, includeProperties: "Category,Author,Cover"),
+                Product = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == productId, includeProperties: "Category,Author,Cover"),
+                ProductId = productId,
                 Count = 1
             };
 
             return View(cart);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Details(ShoppingCart shoppingCart)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            await _shoppingCart.Entity.InsertAsync(shoppingCart);
+            await _shoppingCart.CompleteAsync();
+
+ 
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
