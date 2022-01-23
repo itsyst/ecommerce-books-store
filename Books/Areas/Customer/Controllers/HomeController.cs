@@ -50,31 +50,37 @@ namespace Books.Controllers
         [Authorize]
         public async Task<IActionResult> Details(ShoppingCart shoppingCart)
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             shoppingCart.ApplicationUserId = userId;
 
             var shoppingCartInDb = await _shoppingCart.Entity.GetFirstOrDefaultAsync(c => c.ApplicationUserId == userId && c.ProductId == shoppingCart.ProductId);
             var product = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == shoppingCart.ProductId);
 
-            if (shoppingCartInDb == null)
-                await _shoppingCart.Entity.InsertAsync(shoppingCart);
 
             if (shoppingCart.Count > product.InStock)
             {
                 TempData["Error"] = "Not enough items In stock.";
             }
 
+            if (shoppingCartInDb == null)
+            {
+                await _shoppingCart.Entity.InsertAsync(shoppingCart);
+                await _shoppingCart.CompleteAsync();
+            }
+
             else
             {
+                await _shoppingCart.Entity.UpdateAsync(shoppingCartInDb);
+                await _shoppingCart.CompleteAsync();
+
                 shoppingCartInDb.Count += shoppingCartInDb.Count;
                 product.InStock -= shoppingCartInDb.Count;
 
                 await _product.Entity.UpdateAsync(product);
                 await _product.CompleteAsync();
-
-                await _shoppingCart.Entity.UpdateAsync(shoppingCartInDb);
-                await _shoppingCart.CompleteAsync();
             }
+
+
 
 
             return RedirectToAction(nameof(Index));

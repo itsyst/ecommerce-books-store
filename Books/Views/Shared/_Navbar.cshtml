@@ -2,30 +2,35 @@
 @using Books.Utilities
 
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-	<div class="container">
-		<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Books</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-				aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		@if (@*User.Identity.IsAuthenticated &&*@ User.IsInRole(Roles.RoleType.Admin.ToString()))
-		{
-		<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-			<ul class="navbar-nav flex-grow-1">
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manager</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" asp-area="Admin" asp-controller="Author" asp-action="Index">Authors</a>
-						<a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
-						<a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
-						<a class="dropdown-item" asp-area="Admin" asp-controller="Cover" asp-action="Index">Covers</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
-					</div>
-				</li>
-			</ul>
-		</div>
-		}
-	</div>
-	<partial name="_LoginPartial" />
+    <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Books</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        @if (@*User.Identity.IsAuthenticated &&*@ User.IsInRole(Roles.RoleType.Admin.ToString()))
+        {
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manager</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Author" asp-action="Index">Authors</a>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products</a>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Categories</a>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Cover" asp-action="Index">Covers</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Companies</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        }
+        <div class="nav-iten">
+            <a class="nav-link" asp-controller="Cart" asp-action="Index" asp-area="Customer">
+                <i class="bi bi-cart text-success"></i>
+            </a>
+        </div>
+    </div>
+    <partial name="_LoginPartial" />
 </nav>
