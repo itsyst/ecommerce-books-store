@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
- 
 
- 
+
+
 namespace Books.Domain.Entities
 {
     [Table("Authors")]
     public class AuthorDto
     {
- 
+
         [Key]
         public int Id { get; set; }
 

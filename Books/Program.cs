@@ -1,12 +1,12 @@
 using Books.Data.Persistence;
 using Books.Data.UnitOfWork;
 using Books.Interfaces;
+using Books.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Books.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 

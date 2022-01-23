@@ -1,13 +1,12 @@
 ﻿using Books.Data.Persistence;
 using Books.Data.Repository;
 using Books.Interfaces;
-using Microsoft.Extensions.Logging;
 
 namespace Books.Data.UnitOfWork
 {
 
 # nullable disable
-    public class UnitOfWork<T> : IUnitOfWork<T> where T : class 
+    public class UnitOfWork<T> : IUnitOfWork<T> where T : class
     {
         private readonly ApplicationDbContext _context;
         public IGenericRepository<T> _entity;
@@ -16,13 +15,13 @@ namespace Books.Data.UnitOfWork
         {
             _context = context;
         }
-        
+
         public IGenericRepository<T> Entity
         {
 
             get
             {
-               return _entity ??= new GenericRepository<T>(_context);
+                return _entity ??= new GenericRepository<T>(_context);
             }
 
         }
@@ -31,7 +30,7 @@ namespace Books.Data.UnitOfWork
         {
             await _context.SaveChangesAsync();
         }
- 
+
 
         protected virtual void Dispose(bool disposing)
         {

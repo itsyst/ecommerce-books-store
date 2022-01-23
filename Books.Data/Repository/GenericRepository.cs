@@ -1,13 +1,13 @@
-﻿using Books.Interfaces;
-using System.Linq.Expressions;
-using Books.Data.Persistence;
+﻿using Books.Data.Persistence;
+using Books.Interfaces;
 using Microsoft.EntityFrameworkCore;
-  
+using System.Linq.Expressions;
+
 namespace Books.Data.Repository
 {
 #pragma warning disable CS8603
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : class 
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
         internal readonly DbSet<T> _table;
@@ -42,12 +42,12 @@ namespace Books.Data.Repository
 
         public virtual async Task<T> GetByIdAsync(object id)
         {
-             return await _table.FindAsync(id);
+            return await _table.FindAsync(id);
         }
 
         public async Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true)
         {
- 
+
             if (tracked)
             {
                 IQueryable<T> query = _table;
@@ -78,7 +78,7 @@ namespace Books.Data.Repository
 
                 return await query.FirstOrDefaultAsync();
             }
- 
+
         }
 
         public virtual async Task<bool> InsertAsync(T entity)

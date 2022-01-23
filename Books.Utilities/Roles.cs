@@ -1,4 +1,4 @@
-﻿ 
+﻿
 
 namespace Books.Utilities
 {
@@ -8,7 +8,7 @@ namespace Books.Utilities
         {
             Admin,
             Manager,
-            Employee ,
+            Employee,
             User
         }
 

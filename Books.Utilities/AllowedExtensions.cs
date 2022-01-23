@@ -6,7 +6,7 @@ namespace Books.Utilities
 {
 #pragma warning disable CS8603
 #pragma warning disable CS8765
-    public class AllowedExtensions: ValidationAttribute
+    public class AllowedExtensions : ValidationAttribute
     {
         private readonly string[] _extensions;
         public AllowedExtensions(string[] extensions)

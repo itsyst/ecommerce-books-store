@@ -14,7 +14,7 @@ namespace Books.Dtos
 
         [ForeignKey("ProductId")]
         [ValidateNever]
-        public Product? Product { get; set; } 
+        public Product? Product { get; set; }
 
 
         [Range(1, 1000, ErrorMessage = "Please enter a valur between 1 and 1000")]

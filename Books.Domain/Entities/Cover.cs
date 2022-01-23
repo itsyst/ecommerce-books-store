@@ -12,6 +12,6 @@ namespace Books.Domain.Entities
 
         [Required]
         [MaxLength(55)]
-        public string? Name { get; set; }    
+        public string? Name { get; set; }
     }
 }

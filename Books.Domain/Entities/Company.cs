@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Books.Domain.Entities
 {
@@ -14,7 +9,7 @@ namespace Books.Domain.Entities
         [Required]
         public string? Name { get; set; }
 
-        [Display(Name="Street Adress")]
+        [Display(Name = "Street Adress")]
         public string? StreetAddress { get; set; }
 
         public string? City { get; set; }

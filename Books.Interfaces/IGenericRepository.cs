@@ -2,7 +2,7 @@
 
 namespace Books.Interfaces
 {
-    public interface IGenericRepository<T> where T : class 
+    public interface IGenericRepository<T> where T : class
     {
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null);
         Task<T> GetByIdAsync(object id);
