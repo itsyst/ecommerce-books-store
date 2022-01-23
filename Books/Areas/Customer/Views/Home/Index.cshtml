@@ -1,12 +1,15 @@
 ﻿@model IEnumerable<Books.Domain.Entities.Product>
 
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
 @{
     ViewData["Title"] = "Books";
-    #pragma warning disable
+#pragma warning disable
 }
 
 <div class="row">
-    @foreach (var item in Model)
+    @foreach (var product in Model)
     {
         <div class="col-md-4 col-xs-6 border-primary mb-3">
             <div class="card mb-3" style="max-width: 540px;">
@@ -15,36 +18,40 @@
                         <div class="card-header text-white" style="background:linear-gradient(to right, #6f444d 0%, #f6edb5 100%);">
                             <p class="card-text">
                                 <h5 class="card-title">
-                                    @item.Title                                    
+                                    @product.Title
                                 </h5>
                             </p>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="@item.ImageUrl" alt="@item.Title" class="w-100 h-equal">
+                        <img src="@product.ImageUrl" alt="@product.Title" class="w-100 h-equal">
                     </div>
                     <div class="col-md-6">
                         <div class="card-body">
-                            <p class="card-text"><b>Category: </b>@item.Category.Name</p>
-                            <p class="card-text"><b>By: </b>@item.Author.FullName</p>
-                            <p class="card-text"><b>Price:</b> <strike>@item.Price.ToString("0.00") kr</strike></p>
-                            <p class="card-text"><b>As low as: </b>@((item.Price)/2) kr</p>
+                            <p class="card-text"><b>Category: </b>@product.Category.Name</p>
+                            <p class="card-text"><b>By: </b>@product.Author.FullName</p>
+                            <p class="card-text"><b>Price:</b> <strike>@product.Price.ToString("0.00") kr</strike></p>
+                            <p class="card-text"><b>As low as: </b>@((product.Price)/2) kr</p>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="card-footer">
-                           <div class ="row justify-content-sm-between">
-                        
-                                <a class="btn btn-success text-white" style="width:40%;"  
-                                   asp-route-id="@item.Id">
-                                <i class="bi bi-cart-plus"></i> Add to Cart</a>
-                           
-                    
-                                <a class="btn btn-outline-primary" style="width:40%;" asp-action="Details" asp-route-id="@item.Id">
+                            <div class="row justify-content-sm-between">
+
+                                <a class="btn btn-outline-primary" style="width:40%;" asp-action="Details" asp-route-productId="@product.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                          
-                           </div>
+                                @if(product.InStock > 0){
+                                    <span class="badge bg-success " style="width:20%;height:20px;">
+                                        In Stock: @product.InStock
+                                    </span>
+                                } else {
+                                    <span class="badge bg-danger " style="width:20%;height:20px;">
+                                        <strike>In Stock: @product.InStock</strike>
+                                    </span>
+                                }
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -53,4 +60,4 @@
     }
 </div>
 
- 
+
