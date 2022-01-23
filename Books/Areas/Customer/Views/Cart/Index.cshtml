@@ -1,5 +1,87 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Books.Domain.ViewModels.ShoppingCartViewModel
+
+
 @{
+    ViewData["Title"] = "Cart";
+#pragma warning disable
 }
+
+
+<form method="post">
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-secondary text-dark fw-bold  fs-1 ml-0">
+                <div class="row">
+                    <div class="col-6  pt-2">
+                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        Shopping Cart
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-outline-success btn-sm">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                @foreach (var item in Model.ShoppingCarts)
+                {
+                    <div class="row">
+                        <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                            <img src="@item.Product.ImageUrl" class="rounded w-100" />
+                        </div>
+                        <div class="col-12 col-lg-6 pt-md-3">
+                            <h5><strong>@item.Product.Title</strong></h5>
+                            <p class="fst-italic"><small>ISBN: @Html.Raw(item.Product.ISBN)</small></p>
+                        </div>
+                        <div class="col-12  col-lg-5 text-center row pt-4">
+                            <div class="col-4 text-md-right pt-4">
+                                <h6>
+                                    <strong>
+                                        @item.Product.Price.ToString("c")
+                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                    </strong>
+                                </h6>
+                            </div>
+                            <div class="col-8 col-sm-6 pt-1">
+                                <div class="w-75 btn-group" role="group">
+                                    <a asp-action="addItem" asp-route-cartId="@item.Id" class="btn">
+                                        <i class="bi bi-bag-plus" style="font-size: 2rem; color: cornflowerblue;"></i>
+                                    </a>&nbsp;
+                                    <a asp-action="removeItem" asp-route-cartId="@item.Id" class="btn">
+                                        <i class="bi bi-bag-dash text-warning" style="font-size: 2rem;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-2 col-sm-4 col-lg-2 text-end pt-1">
+                                <a asp-action="remove" asp-route-cartId="@item.Id" class="btn">
+                                    <i class="bi bi-trash-fill text-danger" style="font-size: 2rem;"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                }
+                <div class="row">
+                    <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
+                        <ul class="list-group">
+                            <li class="list-group-item d-flex justify-content-between bg-light">
+                                <span class="text-info"> Total</span>
+                                <strong class="text-info">------</strong> 
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer">
+                <div class="card-footer row">
+                    <div class="col-sm-12 col-lg-4 col-md-6 offset-lg-8 offset-md-6 ">
+                        <a asp-action="Summary" class="btn btn-success form-control">Summary</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
