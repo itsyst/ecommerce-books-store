@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220121211111_RenameTableInDb")]
-    partial class RenameTableInDb
+    [Migration("20220122141807_ReCreateAddTableSoppingCartToDatabase")]
+    partial class ReCreateAddTableSoppingCartToDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -164,7 +164,7 @@ namespace Books.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Books.Domain.ViewModels.ShoppingCart", b =>
+            modelBuilder.Entity("Books.Domain.Entities.ShoppingCart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,7 +178,6 @@ namespace Books.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -455,7 +454,7 @@ namespace Books.Data.Migrations
                     b.Navigation("Cover");
                 });
 
-            modelBuilder.Entity("Books.Domain.ViewModels.ShoppingCart", b =>
+            modelBuilder.Entity("Books.Domain.Entities.ShoppingCart", b =>
                 {
                     b.HasOne("Books.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
