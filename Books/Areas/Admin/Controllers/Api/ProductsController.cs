@@ -79,7 +79,7 @@ namespace Books.Areas.Admin.Controllers.Api
             if (productInDb.ImageUrl != null)
             {
                 string oldImagePath = Path.Combine(_hostEnvironment.WebRootPath, productInDb.ImageUrl.TrimStart('\\'));
-              
+
                 if (System.IO.File.Exists(oldImagePath))
                     System.IO.File.Delete(oldImagePath);
             }
@@ -87,7 +87,7 @@ namespace Books.Areas.Admin.Controllers.Api
             await _product.Entity.DeleteAsync(productInDb.Id);
             await _product.CompleteAsync();
 
-            return Ok(productInDb);      
+            return Ok(productInDb);
         }
     }
 }

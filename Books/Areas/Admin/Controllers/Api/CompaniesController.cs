@@ -70,7 +70,7 @@ namespace Books.Areas.Admin.Controllers.Api
         public async Task<IActionResult> Delete(int? id)
         {
             Company companyInDb = await _company.Entity.GetFirstOrDefaultAsync(c => c.Id == id);
-            
+
             if (companyInDb == null)
                 return NotFound();
 

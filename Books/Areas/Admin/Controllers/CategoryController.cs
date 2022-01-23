@@ -1,7 +1,7 @@
 ﻿using Books.Domain.Entities;
+using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Books.Interfaces;
 
 namespace Books.Controllers
 {
@@ -152,6 +152,6 @@ namespace Books.Controllers
         private async Task<bool> CategoryExists(int id)
         {
             return await _category.Entity.ExistsAsync(id);
-         }
+        }
     }
 }

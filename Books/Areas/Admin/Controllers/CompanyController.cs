@@ -1,5 +1,4 @@
 ﻿using Books.Domain.Entities;
-using Books.Dtos;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +14,7 @@ namespace Books.Areas.Admin.Controllers
             _company = company;
         }
 
-        
+
 
         // GET: CompanyController
         public async Task<IActionResult> Index()
@@ -45,7 +44,7 @@ namespace Books.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
- 
+
 
                 if (company.Id == 0)
                     await _company.Entity.InsertAsync(company);

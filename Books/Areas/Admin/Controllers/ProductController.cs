@@ -105,9 +105,9 @@ namespace Books.Areas.Admin.Controllers
                     {
                         file.CopyTo(fileStreams);
                     }
- 
+
                     model.Product.ImageUrl = @"\images\products\" + fileName + extension;
- 
+
 
                     ResizeImage(file, Path.Combine(uploads, fileName + extension));
                 }
@@ -123,7 +123,7 @@ namespace Books.Areas.Admin.Controllers
 
                 await _product.CompleteAsync();
                 TempData["Success"] = "Product created successfully.";
-                 
+
                 return RedirectToAction(nameof(Index));
             }
             return View(model);

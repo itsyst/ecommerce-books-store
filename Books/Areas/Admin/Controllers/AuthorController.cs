@@ -1,6 +1,6 @@
 ﻿using Books.Domain.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Controllers
