@@ -14,9 +14,10 @@
                     <div class="col-md-12">
                         <div class="card-header text-white" style="background:linear-gradient(to right, #6f444d 0%, #f6edb5 100%);">
                             <p class="card-text">
-                                <h5 class="card-title">
-                                    @Model.Product.Title
-                                </h5>
+                                <h4 class="card-title row justify-content-sm-between mx-1">
+                                      @Model.Product.Title 
+                                     <span class="badge bg-secondary pt-2" style="height:30px;width:30%;">@Model.Product.Cover.Name</span>
+                                </h4>
                             </p>
                         </div>
                     </div>
@@ -44,10 +45,14 @@
                                 <a class="btn btn-outline-primary" style="width:40%;" asp-action="Index">
                                     Back to List
                                 </a>
-                                <button class="btn btn-success text-white" style="width:40%;"
-                                        type="submit" value="Add to Cart">
-                                    <i class="bi bi-cart-plus"></i> Add to Cart
-                                </button>
+                                @if (Model.Count > 0)
+                                {
+                                    <button class="btn btn-success text-white" style="width:40%;"
+                                        type="submit" value="Add to Cart" id="Add_to_cart">
+                                        <i class="bi bi-cart-plus"></i> Add to Cart
+                                    </button>
+                                }
+
                             </p>
                         </div>
                     </div>
@@ -56,3 +61,19 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function(){
+         $('#Count').change(function(){
+            var selection= $('#Count').val();
+            if(selection <= (@Model.Product.InStock))
+                $('#Add_to_cart').show();
+
+            if(selection <= 0 || selection > (@Model.Product.InStock))
+                $('#Add_to_cart').hide();
+        })
+    })
+</script>
+}
