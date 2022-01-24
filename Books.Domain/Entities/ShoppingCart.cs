@@ -26,5 +26,22 @@ namespace Books.Domain.Entities
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
+
+        [NotMapped]
+        public double PriceHolder { get; set; }
+
+        [NotMapped]
+        private double _priceHolderRabat;
+
+        public double PriceHolderRabat()
+        {
+            return _priceHolderRabat;
+        }
+
+        public void SetPriceHolderRabat(double priceHolderRabat)
+        {
+            _priceHolderRabat = priceHolderRabat;
+        }
+
     }
 }
