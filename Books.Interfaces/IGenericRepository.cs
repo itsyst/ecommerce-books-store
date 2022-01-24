@@ -9,7 +9,7 @@ namespace Books.Interfaces
         Task<T> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = true);
         Task<bool> InsertAsync(T entity);
         Task<bool> UpdateAsync(T entity);
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(object id);
         Task<bool> DeleteRangeAsync(IEnumerable<T> entity);
         Task<bool> ExistsAsync(object id);
 

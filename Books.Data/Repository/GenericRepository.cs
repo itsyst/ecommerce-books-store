@@ -97,7 +97,7 @@ namespace Books.Data.Repository
 
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(object id)
         {
             T existing = await GetByIdAsync(id);
             if (existing == null) return false;
