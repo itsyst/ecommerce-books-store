@@ -1,4 +1,5 @@
 ﻿using Books.Utilities;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace Books.Domain.Entities
@@ -21,6 +22,7 @@ namespace Books.Domain.Entities
         [Required]
         [Display(Name = "Author")]
         public int AuthorId { get; set; }
+        [ValidateNever]
         public Author? Author { get; set; }
 
 
@@ -37,11 +39,13 @@ namespace Books.Domain.Entities
         [Required]
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
+        [ValidateNever]
         public Category? Category { get; set; }
 
         [Required]
         [Display(Name = "Cover")]
         public int CoverId { get; set; }
+        [ValidateNever]
         public Cover? Cover { get; set; }
 
         [Range(0, 100)]

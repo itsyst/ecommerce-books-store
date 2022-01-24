@@ -24,6 +24,7 @@ namespace Books.Domain.ViewModels
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]
         public ApplicationUser ApplicationUser { get; set; }
+        [ValidateNever]
 
         public IEnumerable<ShoppingCart> ShoppingCarts { get; set; }
 
