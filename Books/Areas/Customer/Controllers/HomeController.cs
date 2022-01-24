@@ -7,7 +7,6 @@ using System.Security.Claims;
 
 namespace Books.Controllers
 {
-# pragma warning disable IDE0052
     [Area("Customer")]
     public class HomeController : Controller
     {
@@ -39,7 +38,7 @@ namespace Books.Controllers
             {
                 Product = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == productId, includeProperties: "Category,Author,Cover"),
                 ProductId = productId,
-                Count = 1
+                Count = 0
             };
 
             return View(cart);
@@ -60,6 +59,7 @@ namespace Books.Controllers
             if (shoppingCart.Count > product.InStock)
             {
                 TempData["Error"] = "Not enough items In stock.";
+                return RedirectToAction(nameof(Index));
             }
 
             if (shoppingCartInDb == null)
@@ -86,14 +86,12 @@ namespace Books.Controllers
                 else
                 {
                     TempData["Error"] = "Not enough items In stock.";
+                    return RedirectToAction(nameof(Index));
                 }
                 
             }
-
-
-
-
-            return RedirectToAction(nameof(Index));
+ 
+            return RedirectToAction(actionName:"Index",controllerName:"Cart");
         }
 
         public IActionResult Privacy()
