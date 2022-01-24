@@ -1,0 +1,128 @@
+﻿@model Books.Domain.ViewModels.ShoppingCartViewModel
+@using Microsoft.Extensions.Options
+
+
+@{
+    ViewData["Title"] = "Order Summary";
+#pragma warning disable
+}
+
+<form method="post">
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-secondary text-dark fw-bold fs-1 ml-0">
+                <div class="row">
+                    <div class="col-6">
+                        <i class="fa fa-shopping-cart"></i><i class="bi bi-tags-fill text-success"></i> &nbsp;Order Summary
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-dark fw-bold">Shipping Details</span>
+                                </h4>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayName("Name")</label>
+                                </div>
+                                <div class="col-4">
+                                    <input asp-for="OrderHeader.FirstName" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="col-5">
+                                    <input asp-for="OrderHeader.LastName" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayNameFor(model=>model.OrderHeader.PhoneNumber)</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderHeader.PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayNameFor(model=>model.OrderHeader.StreetAddress)</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderHeader.StreetAddress" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayNameFor(model=>model.OrderHeader.City)</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderHeader.City" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayNameFor(model=>model.OrderHeader.State)</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderHeader.State" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label>@Html.DisplayNameFor(model=>model.OrderHeader.PostalCode)</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderHeader.PostalCode" class="form-control" />
+                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-5 offset-lg-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-dark fw-bold">Order Summary</span>
+                            </h4>
+                            <ul class="list-group mb-3">
+                                @foreach (var item in Model.ShoppingCarts)
+                                {
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-0">@item.Product.Title</h6>
+                                            <small class="text-muted">Quantity: @item.Count</small>
+                                        </div>
+                                        <span class="text-muted">@((item.PriceHolder * item.Count).ToString("c")) </span>
+                                    </li>
+                                }
+                                <li class="list-group-item d-flex justify-content-between bg-light">
+                                    <small class="text-dark">Total (USD)</small>
+                                    <strong class="text-dark">@Model.OrderHeader.OrderTotal.ToString("c")</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <p class="col-12 col-md-8 pt-2 text-warning">
+                         <span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(3).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
+                    </p>
+                    <div class="col-12 col-md-4">
+                        <button type="submit" value="Place Order" class="btn btn-primary form-control">Place Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
