@@ -1,6 +1,7 @@
 ﻿using Books.Domain.Entities;
 using Books.Domain.ViewModels;
 using Books.Interfaces;
+using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,18 @@ namespace Books.Areas.Customer.Controllers
     {
         private readonly IUnitOfWork<Product> _product;
         private readonly IUnitOfWork<ShoppingCart> _shoppingCart;
+        private readonly IUnitOfWork<ApplicationUser> _applicationUser;
 
-        public CartController(IUnitOfWork<Product> product, IUnitOfWork<ShoppingCart> shoppingCart)
+        public CartController(
+            IUnitOfWork<Product> product, 
+            IUnitOfWork<ShoppingCart> shoppingCart,
+            IUnitOfWork<ApplicationUser> applicationUser)
         {
             _product = product;
             _shoppingCart = shoppingCart;
+            _applicationUser = applicationUser;
         }
+
         // GET: CartController
         public async Task<IActionResult> Index()
         {
@@ -29,7 +36,8 @@ namespace Books.Areas.Customer.Controllers
             {
                 ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(
                     c => c.ApplicationUserId == userId,
-                   includeProperties: "Product")
+                   includeProperties: "Product"),
+                OrderHeader = new()
 
             };
 
@@ -37,7 +45,7 @@ namespace Books.Areas.Customer.Controllers
             {
                 item.PriceHolder = item.Count * item.Product.Price;
                 item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT);
-                cart.TotalSum += (item.PriceHolderRabat());
+                cart.OrderHeader.OrderTotal += (item.PriceHolderRabat());
             }
 
             return View(cart);
@@ -125,6 +133,47 @@ namespace Books.Areas.Customer.Controllers
             await _shoppingCart.CompleteAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        
+        /// <summary>
+        /// Show Order summary.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Summary()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var cart = new ShoppingCartViewModel()
+            {
+                ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(
+                c => c.ApplicationUserId == userId,
+                includeProperties: "Product"),
+                OrderHeader = new()
+            };
+
+ 
+            cart.OrderHeader.ApplicationUser = await _applicationUser.Entity.GetFirstOrDefaultAsync(u => u.Id == userId);
+
+            cart.OrderHeader.FirstName = cart.OrderHeader.ApplicationUser.FirstName;
+            cart.OrderHeader.LastName = cart.OrderHeader.ApplicationUser.LastName;
+            cart.OrderHeader.PhoneNumber = cart.OrderHeader.ApplicationUser.PhoneNumber;
+            cart.OrderHeader.StreetAddress = cart.OrderHeader.ApplicationUser.StreetAddress;
+            cart.OrderHeader.City = cart.OrderHeader.ApplicationUser.City;
+            cart.OrderHeader.State = cart.OrderHeader.ApplicationUser.State;
+            cart.OrderHeader.PostalCode = cart.OrderHeader.ApplicationUser.PostalCode;
+
+            foreach (var item in cart.ShoppingCarts)
+            {
+                item.PriceHolder = item.Count * item.Product.Price;
+                item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT);
+                cart.OrderHeader.OrderTotal += (item.PriceHolderRabat());
+            }
+
+            if (!(cart.OrderHeader.OrderTotal > 0))
+                return RedirectToAction(actionName: "Index", controllerName:"Cart");
+
+            return View(cart);
         }
     }
 }
