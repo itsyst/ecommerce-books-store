@@ -7,6 +7,7 @@ namespace Books.Domain.Entities
         public int Id { get; set; }
 
         [Required]
+        [Display(Name ="Company")]
         public string? Name { get; set; }
 
         [Display(Name = "Street Adress")]
