@@ -1,4 +1,4 @@
-﻿@model Books.Domain.ViewModels.ShoppingCartViewModel
+﻿@model Books.Domain.ViewModels.ShoppingCartViewModel 
 
 
 @{
@@ -33,13 +33,15 @@
                         <div class="col-12 col-lg-6 pt-md-3">
                             <h5><strong>@item.Product.Title</strong></h5>
                             <p class="fst-italic"><small>ISBN: @Html.Raw(item.Product.ISBN)</small></p>
+                            <p class="fst-italic text-warning"><span class="text-muted">Items: &nbsp</span><strong>@item.Count</strong></p>
                         </div>
                         <div class="col-12  col-lg-5 text-center row pt-4">
                             <div class="col-4 text-md-right pt-4">
                                 <h6>
                                     <strong>
-                                        @item.Product.Price.ToString("c")
-                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                        
+                                        <span class="text-muted"><strike>@item.PriceHolder.ToString("c")</strike> &nbsp</span>
+                                        <strong>@item.PriceHolderRabat().ToString("c")</strong>
                                     </strong>
                                 </h6>
                             </div>
@@ -67,7 +69,7 @@
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between bg-light">
                                 <span class="text-info"> Total</span>
-                                <strong class="text-info">------</strong> 
+                                <strong class="text-info">@Model.TotalSum.ToString("c")</strong> 
                             </li>
                         </ul>
                     </div>
