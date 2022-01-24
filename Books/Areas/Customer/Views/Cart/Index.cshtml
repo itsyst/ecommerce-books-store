@@ -14,7 +14,7 @@
             <div class="card-header bg-secondary text-dark fw-bold  fs-1 ml-0">
                 <div class="row">
                     <div class="col-6  pt-2">
-                        <i class="fa fa-shopping-cart"></i> &nbsp;
+                        <i class="bi bi-receipt text-success"></i> &nbsp;
                         Shopping Cart
                     </div>
                     <div class="col-6 text-end">
@@ -68,8 +68,8 @@
                     <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between bg-light">
-                                <span class="text-info"> Total</span>
-                                <strong class="text-info">@Model.TotalSum.ToString("c")</strong> 
+                                <span class="text-dark"> Total</span>
+                                <strong class="text-dark">@Model.OrderHeader.OrderTotal.ToString("c")</strong> 
                             </li>
                         </ul>
                     </div>
