@@ -47,16 +47,16 @@
                             </div>
                             <div class="col-8 col-sm-6 pt-1">
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-action="addItem" asp-route-cartId="@item.Id" class="btn">
+                                    <a asp-action="AddItem" asp-route-cartId="@item.Id" class="btn">
                                         <i class="bi bi-bag-plus" style="font-size: 2rem; color: cornflowerblue;"></i>
                                     </a>&nbsp;
-                                    <a asp-action="removeItem" asp-route-cartId="@item.Id" class="btn">
+                                    <a asp-action="RemoveItem" asp-route-cartId="@item.Id" class="btn">
                                         <i class="bi bi-bag-dash text-warning" style="font-size: 2rem;"></i>
                                     </a>
                                 </div>
                             </div>
                             <div class="col-2 col-sm-4 col-lg-2 text-end pt-1">
-                                <a asp-action="remove" asp-route-cartId="@item.Id" class="btn">
+                                <a asp-action="RemoveFromBasket" asp-route-cartId="@item.Id" class="btn">
                                     <i class="bi bi-trash-fill text-danger" style="font-size: 2rem;"></i>
                                 </a>
                             </div>
