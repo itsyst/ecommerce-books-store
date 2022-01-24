@@ -71,13 +71,23 @@ namespace Books.Controllers
             else
             {
                 await _shoppingCart.Entity.UpdateAsync(shoppingCartInDb);
-                await _shoppingCart.CompleteAsync();
 
-                shoppingCartInDb.Count += shoppingCartInDb.Count;
-                product.InStock -= shoppingCartInDb.Count;
+                shoppingCartInDb.Count += shoppingCart.Count;
 
-                await _product.Entity.UpdateAsync(product);
-                await _product.CompleteAsync();
+                if (product.InStock > 0 && shoppingCart.Count <= product.InStock)
+                {
+                    product.InStock -= shoppingCart.Count;
+
+                    await _product.Entity.UpdateAsync(product);
+                    await _product.CompleteAsync();
+
+                    await _shoppingCart.CompleteAsync();
+                }
+                else
+                {
+                    TempData["Error"] = "Not enough items In stock.";
+                }
+                
             }
 
 
