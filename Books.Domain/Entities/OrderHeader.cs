@@ -50,5 +50,8 @@ namespace Books.Domain.Entities
         public Company? Company { get; set; } = null;
 
         public double OrderTotal { get; set; } = 0;
+        public string? OrderStatus { get; set; }
+        public string? OrderDate { get; set; }
+        public string? PaymentStatus { get; set; }
     }
 }
