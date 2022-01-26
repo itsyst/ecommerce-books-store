@@ -8,6 +8,10 @@
 #pragma warning disable
 }
 
+<div class="w-100">
+    <partial name="_SlideShow" />
+</div>
+<br />
 <div class="row">
     @foreach (var product in Model)
     {
@@ -41,11 +45,14 @@
                                 <a class="btn btn-outline-primary" style="width:40%;" asp-action="Details" asp-route-productId="@product.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                                @if(product.InStock > 0){
+                                @if (product.InStock > 0)
+                                {
                                     <span class="badge bg-success " style="width:20%;height:20px;">
                                         In Stock: @product.InStock
                                     </span>
-                                } else {
+                                }
+                                else
+                                {
                                     <span class="badge bg-danger " style="width:20%;height:20px;">
                                         <strike>In Stock: 0</strike>
                                     </span>
