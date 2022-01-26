@@ -47,7 +47,8 @@ namespace Books.Domain.Entities
         public string? PostalCode { get; set; }
 
         [Display(Name = "Company Name")]
-        public Company? Company { get; set; } = null;
+        [ValidateNever]
+        public Company? Company { get; set; }
 
         public double OrderTotal { get; set; } = 0;
         public string? OrderStatus { get; set; }

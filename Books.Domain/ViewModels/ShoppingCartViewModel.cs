@@ -10,7 +10,7 @@ namespace Books.Domain.ViewModels
     public class ShoppingCartViewModel
     {
         [ValidateNever]
-        public IEnumerable<ShoppingCart>? ShoppingCarts { get; set; }
+        public IEnumerable<ShoppingCart> ShoppingCarts { get; set; }
 
         [ValidateNever]
         public OrderHeader OrderHeader { get; set; }
