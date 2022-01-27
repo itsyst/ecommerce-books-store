@@ -55,7 +55,7 @@ namespace Books.Domain.Entities
         public double OrderTotal { get; set; } = 0;
         public string? OrderStatus { get; set; }
 
-        public string? PaymentStatus { get; set; }
+        public string PaymentStatus { get; set; }
 
         // Stripe Configutation.
         public string PaymentIntentId { get; set; } = string.Empty;
