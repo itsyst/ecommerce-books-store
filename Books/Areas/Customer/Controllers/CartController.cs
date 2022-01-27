@@ -301,14 +301,18 @@ namespace Books.Areas.Customer.Controllers
             var service = new SessionService();
             Session session = service.Get(orderHeaderInDb.SessionId);
 
-            // Check stripe status.
-            if (session.PaymentStatus.ToLower().Equals("paid"))
+            if (!orderHeaderInDb.PaymentStatus.Equals(Status.Payment.Delayed.ToString()))
             {
-                orderHeaderInDb.OrderStatus = Status.StatusType.Approved.ToString();
-                orderHeaderInDb.PaymentStatus = Status.Payment.Approved.ToString();
 
-                await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
-                await _orderHeader.CompleteAsync();
+                // Check stripe status.
+                if (session.PaymentStatus.ToLower().Equals("paid"))
+                {
+                    orderHeaderInDb.OrderStatus = Status.StatusType.Approved.ToString();
+                    orderHeaderInDb.PaymentStatus = Status.Payment.Approved.ToString();
+
+                    await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
+                    await _orderHeader.CompleteAsync();
+                }
             }
 
 
