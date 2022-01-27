@@ -38,9 +38,10 @@ namespace Books.Domain.Entities
             return _priceHolderRabat;
         }
 
-        public void SetPriceHolderRabat(double priceHolderRabat)
+        public double SetPriceHolderRabat(double priceHolderRabat)
         {
             _priceHolderRabat = priceHolderRabat;
+            return _priceHolderRabat;
         }
 
     }

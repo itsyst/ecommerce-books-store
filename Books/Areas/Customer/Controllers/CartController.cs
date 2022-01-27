@@ -5,6 +5,7 @@ using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace Books.Areas.Customer.Controllers
@@ -168,7 +169,7 @@ namespace Books.Areas.Customer.Controllers
             ShoppingCartViewModel.OrderHeader.City = ShoppingCartViewModel.OrderHeader.ApplicationUser.City;
             ShoppingCartViewModel.OrderHeader.State = ShoppingCartViewModel.OrderHeader.ApplicationUser.State;
             ShoppingCartViewModel.OrderHeader.PostalCode = ShoppingCartViewModel.OrderHeader.ApplicationUser.PostalCode;
- 
+
             foreach (var item in ShoppingCartViewModel.ShoppingCarts)
             {
                 item.PriceHolder = item.Count * item.Product.Price;
@@ -239,12 +240,88 @@ namespace Books.Areas.Customer.Controllers
             await _shoppingCart.Entity.UpdateAsync(cart);
             await _shoppingCart.CompleteAsync();
 
-            // Remove shopping carts from database.
-            await _shoppingCart.Entity.DeleteRangeAsync(ShoppingCartViewModel.ShoppingCarts);
-            await _shoppingCart.CompleteAsync();
+            // Stripe settings
+            if (appUser.CompanyId != 0)
+            {
+                //stripe settings 
+                var domain = "https://localhost:44376/";
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string>
+                {
+                  "card",
+                },
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment",
+                    SuccessUrl = domain + $"customer/cart/OrderConfirmed?id={ShoppingCartViewModel.OrderHeader.Id}",
+                    CancelUrl = domain + $"customer/cart/index",
+                };
+
+                foreach (var item in ShoppingCartViewModel.ShoppingCarts)
+                {
+
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT) * 100), //20.00 -> 2000
+                            Currency = "sek",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Title,
+                            },
+
+                        },
+                        Quantity = item.Count,
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                //Update orderheader table.
+                ShoppingCartViewModel.OrderHeader.SessionId = session.Id;
+                ShoppingCartViewModel.OrderHeader.PaymentIntentId = session.PaymentIntentId;
+                await _orderHeader.Entity.UpdateAsync(ShoppingCartViewModel.OrderHeader);
+                await _orderHeader.CompleteAsync();
+
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303);
+            }
 
             return RedirectToAction(actionName: "Index", controllerName: "Home");
+        }
 
+
+        public async Task<IActionResult> OrderConfirmed(int id)
+        {
+            var orderHeaderInDb = await _orderHeader.Entity.GetFirstOrDefaultAsync(o => o.Id == id, includeProperties: "ApplicationUser");
+
+            var service = new SessionService();
+            Session session = service.Get(orderHeaderInDb.SessionId);
+
+            // Check stripe status.
+            if (session.PaymentStatus.ToLower().Equals("paid"))
+            {
+                orderHeaderInDb.OrderStatus = Status.StatusType.Approved.ToString();
+                orderHeaderInDb.PaymentStatus = Status.Payment.Approved.ToString();
+
+                await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
+                await _orderHeader.CompleteAsync();
+            }
+
+
+            // Retreive shoppingcarts from the database.
+            var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: "Product");
+
+
+            // Remove shopping carts from database.
+            await _shoppingCart.Entity.DeleteRangeAsync(shoppingCartsInDb);
+            await _shoppingCart.CompleteAsync();
+
+
+            return View(id);
         }
     }
 }

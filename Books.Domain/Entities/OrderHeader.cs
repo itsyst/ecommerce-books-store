@@ -50,9 +50,16 @@ namespace Books.Domain.Entities
         [ValidateNever]
         public Company? Company { get; set; }
 
+        [Required]
+        public string OrderDate { get; set; } = string.Empty;
         public double OrderTotal { get; set; } = 0;
         public string? OrderStatus { get; set; }
-        public string? OrderDate { get; set; }
+
         public string? PaymentStatus { get; set; }
+
+        // Stripe Configutation.
+        public string PaymentIntentId { get; set; } = string.Empty;
+        public string SessionId { get; set; } = string.Empty;
+
     }
 }
