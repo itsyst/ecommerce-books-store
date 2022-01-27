@@ -1,4 +1,5 @@
 ﻿@model Books.Domain.Entities.ShoppingCart
+@using Books.Utilities
 
 @{
     ViewData["Title"] = "Details";
@@ -32,7 +33,7 @@
                             <p class="card-text"><b class="text-primary">Category: </b>@Model.Product.Category.Name</p>
                             <p class="card-text"><b class="text-primary">Author: </b> @Model.Product.Author.FullName</p>
                             <p class="card-text mt-2"><b class="text-primary">Price: </b><strike>@Model.Product.Price.ToString("c")</strike></p>
-                            <p class="card-text text-md font-weight-bold text-warning"><b>As low as: </b>@((Model.Product.Price)/2) kr</p>
+                            <p class="card-text text-md font-weight-bold text-warning"><b>As low as: </b>@(((Model.Product.Price)*(Rabat.DISCOUNT)).ToString("c"))</p>
                         </div>
                         <div class=" row card-text mx-1">
                             <b class="text-primary col-md-2">Quantity </b>

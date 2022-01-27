@@ -34,8 +34,8 @@
                         <div class="card-body">
                             <p class="card-text"><b>Category: </b>@product.Category.Name</p>
                             <p class="card-text"><b>By: </b>@product.Author.FullName</p>
-                            <p class="card-text"><b>Price:</b> <strike>@product.Price.ToString("0.00") kr</strike></p>
-                            <p class="card-text"><b>As low as: </b>@((product.Price)*Rabat.DISCOUNT) kr</p>
+                            <p class="card-text"><b>Price:</b> <strike>@product.Price.ToString("c")</strike></p>
+                            <p class="card-text"><b>As low as: </b>@(((product.Price)*(Rabat.DISCOUNT)).ToString())</p>
                         </div>
                     </div>
                     <div class="col-md-12">
