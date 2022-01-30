@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Books.Areas.Customer.Controllers
 {
-#pragma warning disable CS8618  
+#pragma warning disable
 
     [Area("Customer")]
     [Authorize]
@@ -117,6 +117,7 @@ namespace Books.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
         /// <summary>
         /// Remove item from the shopping cart.
         /// </summary>
@@ -183,7 +184,7 @@ namespace Books.Areas.Customer.Controllers
             return View(ShoppingCartViewModel);
         }
 
-
+ 
         /// <summary>
         /// Show Order summary.
         /// </summary>
@@ -293,7 +294,6 @@ namespace Books.Areas.Customer.Controllers
             return RedirectToAction(actionName: "Index", controllerName: "Home");
         }
 
-
         public async Task<IActionResult> OrderConfirmed(int id)
         {
             var orderHeaderInDb = await _orderHeader.Entity.GetFirstOrDefaultAsync(o => o.Id == id, includeProperties: "ApplicationUser");
@@ -315,15 +315,12 @@ namespace Books.Areas.Customer.Controllers
                 }
             }
 
-
             // Retreive shoppingcarts from the database.
             var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: "Product");
-
 
             // Remove shopping carts from database.
             await _shoppingCart.Entity.DeleteRangeAsync(shoppingCartsInDb);
             await _shoppingCart.CompleteAsync();
-
 
             return View(id);
         }
