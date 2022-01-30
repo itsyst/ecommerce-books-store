@@ -15,7 +15,7 @@
 <div class="row">
     @foreach (var product in Model)
     {
-        <div class="col-md-4 col-xs-6 border-primary mb-3">
+        <div class="col-md-6 col-lg-4 col-xs-6 border-primary mb-3">
             <div class="card mb-3" style="max-width: 540px;">
                 <div class="row g-0">
                     <div class="col-md-12">
@@ -47,17 +47,16 @@
                                 </a>
                                 @if (product.InStock > 0)
                                 {
-                                    <span class="badge bg-success " style="width:20%;height:20px;">
+                                    <span class="badge bg-success w-25" style="height:22px;">
                                         In Stock: @product.InStock
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-danger " style="width:20%;height:20px;">
+                                    <span class="badge bg-danger w-25" style="height:22px;">
                                         <strike>In Stock: 0</strike>
                                     </span>
                                 }
-
                             </div>
                         </div>
                     </div>
