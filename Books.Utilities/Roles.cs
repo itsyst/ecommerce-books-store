@@ -7,17 +7,17 @@ namespace Books.Utilities
         public enum RoleType
         {
             Admin,
-            Manager,
             Employee,
-            User
+            Individual,
+            Company
         }
 
         public static List<RoleType> GetAllRoles { get; set; } = new List<RoleType>
         {
              RoleType.Admin,
-             RoleType.Manager,
-             RoleType.Employee ,
-             RoleType.User
+             RoleType.Employee,
+             RoleType.Individual,
+             RoleType.Company
         };
     }
 }
