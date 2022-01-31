@@ -18,7 +18,7 @@ namespace Books.Data.Repository
             _table = context.Set<T>();
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string? includeProperties = null)
+        public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> query = _table;
             if (filter != null)
@@ -27,14 +27,11 @@ namespace Books.Data.Repository
             }
             if (includeProperties != null)
             {
-                foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProp in includeProperties)
                 {
                     query = query.Include(includeProp);
                 }
-            }
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync();
+
             }
 
             return await query.ToListAsync();
