@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Books.Controllers
 {
+#pragma warning disable
+
     [Area("Admin")]
     public class AuthorController : Controller
     {
@@ -18,7 +20,7 @@ namespace Books.Controllers
         // GET: Author
         public async Task<IActionResult> Index()
         {
-            var authors = await _author.Entity.GetAllAsync(includeProperties: "Products");
+            var authors = await _author.Entity.GetAllAsync(filter: null, includeProperties: a=>a.Products);
             return View(authors);
         }
 

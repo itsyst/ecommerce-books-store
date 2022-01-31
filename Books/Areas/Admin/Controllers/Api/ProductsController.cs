@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers.Api
 {
+#pragma warning disable
+
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
@@ -28,7 +30,7 @@ namespace Books.Areas.Admin.Controllers.Api
         [HttpHead]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _product.Entity.GetAllAsync(includeProperties: "Category,Author,Cover");
+            var products = await _product.Entity.GetAllAsync(filter: null, c=>c.Category,a=>a.Author,v=>v.Cover);
             return Ok(products);
         }
 

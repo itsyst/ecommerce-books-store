@@ -46,7 +46,7 @@ namespace Books.Areas.Customer.Controllers
 
             ShoppingCartViewModel = new ShoppingCartViewModel()
             {
-                ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: "Product"),
+                ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties:p=>p.Product),
                 OrderHeader = new()
             };
 
@@ -158,7 +158,7 @@ namespace Books.Areas.Customer.Controllers
             {
                 ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(
                 c => c.ApplicationUserId == userId,
-                includeProperties: "Product"),
+                includeProperties: p=>p.Product),
                 OrderHeader = new()
             };
 
@@ -197,13 +197,12 @@ namespace Books.Areas.Customer.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = await _applicationUser.Entity.GetFirstOrDefaultAsync(a => a.Id == userId, includeProperties: "Company");
 
-            //ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId,includeProperties: "Product");
-            ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: "Product");
+            ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: p=>p.Product);
 
             // Shipping Details
             ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Pending.ToString();
             ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Pending.ToString();
-            ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now.ToString();
+            ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
             ShoppingCartViewModel.OrderHeader.Company = appUser.Company;
 
@@ -316,7 +315,7 @@ namespace Books.Areas.Customer.Controllers
             }
 
             // Retreive shoppingcarts from the database.
-            var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: "Product");
+            var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: p=>p.Product);
 
             // Remove shopping carts from database.
             await _shoppingCart.Entity.DeleteRangeAsync(shoppingCartsInDb);

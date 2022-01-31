@@ -8,6 +8,8 @@ using System.Security.Claims;
 
 namespace Books.Areas.Admin.Controllers.Api
 {
+#pragma warning disable
+
     [ApiController]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiVersion("1.0")]
@@ -35,11 +37,11 @@ namespace Books.Areas.Admin.Controllers.Api
         {
             IEnumerable<OrderHeader> orderHeaderInDB;
             if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(includeProperties: "ApplicationUser");
+                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(includeProperties: o=>o.ApplicationUser);
             else
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(u => u.ApplicationUserId == userId, includeProperties: "ApplicationUser");
+                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(u => u.ApplicationUserId == userId, includeProperties: o => o.ApplicationUser);
 
             }
             return Ok(orderHeaderInDB);

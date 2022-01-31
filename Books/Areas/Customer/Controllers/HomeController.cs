@@ -7,6 +7,8 @@ using System.Security.Claims;
 
 namespace Books.Controllers
 {
+#pragma warning disable
+
     [Area("Customer")]
     public class HomeController : Controller
     {
@@ -26,7 +28,7 @@ namespace Books.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var product = await _product.Entity.GetAllAsync(includeProperties: "Category,Author,Cover");
+            var product = await _product.Entity.GetAllAsync(filter: null, c=>c.Category, a=>a.Author, r=>r.Cover);
             return View(product);
         }
 
