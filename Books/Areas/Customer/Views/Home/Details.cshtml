@@ -6,57 +6,56 @@
 #pragma warning disable
 }
 
+<br />
 <form method="post">
     <input hidden asp-for="ProductId" />
-    <div class="row">
-        <div class="col-md-8 offset-2">
-            <div class="card mb-12">
-                <div class="row g-0">
-                    <div class="col-md-12">
-                        <div class="card-header text-white" style="background:linear-gradient(to right, #6f444d 0%, #f6edb5 100%);">
-                            <p class="card-text">
-                                <h4 class="card-title row justify-content-sm-between mx-1">
-                                      @Model.Product.Title 
-                                     <span class="badge bg-secondary pt-2" style="height:30px;width:30%;">@Model.Product.Cover.Name</span>
-                                </h4>
-                            </p>
-                        </div>
+    <div class="container">
+        <div class="card mb-12">
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-header text-white" style="background:linear-gradient(to right, #6f444d 0%, #f6edb5 100%);">
+                        <p class="card-text">
+                            <h4 class="card-title row justify-content-sm-between mx-1">
+                                @Model.Product.Title
+                                <span class="badge bg-secondary pt-2" style="height:30px;width:30%;">@Model.Product.Cover.Name</span>
+                            </h4>
+                        </p>
                     </div>
-                    <div class="col-md-4">
-                        <img class="w-100" src="@Model.Product.ImageUrl" alt="@Model.Product.Title">
+                </div>
+                <div class="col-md-4">
+                    <img class="w-100" src="@Model.Product.ImageUrl" alt="@Model.Product.Title">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <p class="card-text">@Html.Raw(@Model.Product.Description)</p>
+                        <br />
+                        <p class="card-text"><b class="text-primary">Title: </b> @Model.Product.Title</p>
+                        <p class="card-text"><b class="text-primary">ISBN : </b> @Model.Product.ISBN</p>
+                        <p class="card-text"><b class="text-primary">Category: </b>@Model.Product.Category.Name</p>
+                        <p class="card-text"><b class="text-primary">Author: </b> @Model.Product.Author.FullName</p>
+                        <p class="card-text mt-2"><b class="text-primary">Price: </b><strike>@Model.Product.Price.ToString("c")</strike></p>
+                        <p class="card-text text-md font-weight-bold text-warning"><b>As low as: </b>@(((Model.Product.Price)*(Rabat.DISCOUNT)).ToString("c"))</p>
                     </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <p class="card-text">@Html.Raw(@Model.Product.Description)</p>
-                            <p class="card-text"><b class="text-primary">Title: </b> @Model.Product.Title</p>
-                            <p class="card-text"><b class="text-primary">ISBN : </b> @Model.Product.ISBN</p>
-                            <p class="card-text"><b class="text-primary">Category: </b>@Model.Product.Category.Name</p>
-                            <p class="card-text"><b class="text-primary">Author: </b> @Model.Product.Author.FullName</p>
-                            <p class="card-text mt-2"><b class="text-primary">Price: </b><strike>@Model.Product.Price.ToString("c")</strike></p>
-                            <p class="card-text text-md font-weight-bold text-warning"><b>As low as: </b>@(((Model.Product.Price)*(Rabat.DISCOUNT)).ToString("c"))</p>
-                        </div>
-                        <div class=" row card-text mx-1">
-                            <b class="text-primary col-md-2">Quantity </b>
-                            <input class="col-md-4 mb-1 mx-2" asp-for="Count" class="form-control" />
-                            <span asp-validation-for="Count" class="text-danger"></span>
-                        </div>
+                    <div class="card-text mx-3">
+                        <b class="text-primary col-md-2">Quantity </b>
+                        <input class="col-2 col-md-2" asp-for="Count" class="form-control" /><br />
+                        <span asp-validation-for="Count" class="text-danger"></span>
                     </div>
-                    <div class="col-md-12">
-                        <div class="card-footer">
-                            <p class="row justify-content-sm-between">
-                                <a class="btn btn-outline-primary" style="width:40%;" asp-action="Index">
-                                    Back to List
-                                </a>
-                                @if (Model.Product.InStock > 0)
-                                {
-                                    <button class="btn btn-success text-white" style="width:40%;"
-                                        type="submit" value="Add to Cart" id="Add_to_cart">
-                                        <i class="bi bi-cart-plus"></i> Add to Cart
-                                    </button>
-                                }
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="card-footer">
+                        <p class="row justify-content-sm-between">
+                            <a class="btn btn-outline-primary col-12 col-md-4" asp-action="Index">
+                                Back to List
+                            </a>
+                            @if (Model.Product.InStock > 0)
+                            {
+                                <button class="btn btn-success text-white col-12 col-md-4" type="submit" value="Add to Cart" id="Add_to_cart">
+                                    <i class="bi bi-cart-plus"></i> Add to Cart
+                                </button>
+                            }
 
-                            </p>
-                        </div>
+                        </p>
                     </div>
                 </div>
             </div>
