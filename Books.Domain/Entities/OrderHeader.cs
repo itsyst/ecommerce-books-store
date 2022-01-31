@@ -51,7 +51,8 @@ namespace Books.Domain.Entities
         public Company? Company { get; set; }
 
         [Required]
-        public string OrderDate { get; set; } = string.Empty;
+        [DataType(DataType.DateTime)]
+        public DateTime OrderDate { get; set; }
         public double OrderTotal { get; set; } = 0;
 
         // Stripe Configutation.
