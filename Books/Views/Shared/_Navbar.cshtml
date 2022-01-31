@@ -29,7 +29,7 @@
                         </a>
                     </li>
                 }
-                else if (!User.IsInRole(Roles.RoleType.Admin.ToString()))
+                else if (!User.IsInRole(Roles.RoleType.Admin.ToString()) && User.Identity.IsAuthenticated)
                 {   
                     <li class="nav-item px-2">
                         <a class="nav-link" asp-controller="Order" asp-action="Index" asp-area="Admin">
