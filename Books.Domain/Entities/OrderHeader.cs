@@ -53,13 +53,20 @@ namespace Books.Domain.Entities
         [Required]
         public string OrderDate { get; set; } = string.Empty;
         public double OrderTotal { get; set; } = 0;
-        public string? OrderStatus { get; set; }
-
-        public string PaymentStatus { get; set; } = string.Empty;
 
         // Stripe Configutation.
+        public string? OrderStatus { get; set; }
+        public string PaymentStatus { get; set; } = string.Empty;
         public string PaymentIntentId { get; set; } = string.Empty;
         public string SessionId { get; set; } = string.Empty;
+        [DataType(DataType.DateTime)]
+        public DateTime ShippingDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime PaymentDate { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime PaymentDueDate { get; set; }
+        public string? TrackingNumber { get; set; }
+        public string? Carrier { get; set; }
 
     }
 }
