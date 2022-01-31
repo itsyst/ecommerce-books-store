@@ -8,7 +8,7 @@ Build a complete e-commerce application ASP.NET Core  MVC  .NET 6
 
  
 <a href="https://github.com/itsyst/ecommerce-books-store">
- <img src="https://i.ibb.co/jvS7Rk9/home.png" alt="home" border="0">
+ <img src="https://i.ibb.co/nPkkj06/home-books.png" alt="home-books" border="0"> 
  <img src="https://i.ibb.co/RPtq7hw/books-photo.png" alt="books-photo" border="0"> 
  <img src="https://i.ibb.co/DDMhzbw/book-photo.png" alt="book-photo" border="0"> 
  <img src="https://i.ibb.co/Snc2cZj/cart.png" alt="cart" border="0"> 
