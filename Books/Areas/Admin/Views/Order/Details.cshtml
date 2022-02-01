@@ -309,7 +309,7 @@
             <div class="card-footer">
                 <div class="row">
                     <p class="col-12 col-md-8 pt-2 text-warning">
-                        <span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(3).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
+                        <span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(ArrivalDate.Days).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
                     </p>
 
                     @if (!User.IsInRole(Roles.RoleType.Admin.ToString()) || !User.IsInRole(Roles.RoleType.Employee.ToString()))

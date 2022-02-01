@@ -147,6 +147,9 @@ namespace Books.Areas.Admin.Controllers
             orderHeaderInDB.Carrier = OrderViewModel.OrderHeader.Carrier;
             orderHeaderInDB.OrderStatus = Status.StatusType.Shipped.ToString();
             orderHeaderInDB.ShippingDate = DateTime.Now;
+
+            if (orderHeaderInDB.PaymentStatus.Equals(Status.Payment.Delayed))
+                orderHeaderInDB.PaymentStatus = DateTime.Now.AddDays(ArrivalDate.Month).ToShortDateString();
          
             await _orderHeader.Entity.UpdateAsync(orderHeaderInDB);
             await _orderHeader.CompleteAsync();
