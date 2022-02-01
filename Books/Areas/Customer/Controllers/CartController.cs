@@ -200,12 +200,20 @@ namespace Books.Areas.Customer.Controllers
             ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: p=>p.Product);
 
             // Shipping Details
-            ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Pending.ToString();
-            ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Pending.ToString();
             ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
             ShoppingCartViewModel.OrderHeader.Company = appUser.Company;
 
+            if(appUser.CompanyId != 0)
+            {
+                ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Delayed.ToString();
+                ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Approved.ToString();
+            }
+            else
+            {
+                ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Pending.ToString();
+                ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Pending.ToString();
+            }
 
 
             foreach (var item in ShoppingCartViewModel.ShoppingCarts)
@@ -242,66 +250,63 @@ namespace Books.Areas.Customer.Controllers
 
             // Stripe settings
             if (appUser.CompanyId != 0)
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
+
+            //stripe settings 
+            var domain = "https://localhost:44376/";
+            var options = new SessionCreateOptions
             {
-                //stripe settings 
-                var domain = "https://localhost:44376/";
-                var options = new SessionCreateOptions
-                {
-                    PaymentMethodTypes = new List<string>
-                {
-                  "card",
-                },
-                    LineItems = new List<SessionLineItemOptions>(),
-                    Mode = "payment",
-                    SuccessUrl = domain + $"customer/cart/OrderConfirmed?id={ShoppingCartViewModel.OrderHeader.Id}",
-                    CancelUrl = domain + $"customer/cart/index",
-                };
+                PaymentMethodTypes = new List<string>
+            {
+                "card",
+            },
+                LineItems = new List<SessionLineItemOptions>(),
+                Mode = "payment",
+                SuccessUrl = domain + $"customer/cart/OrderConfirmed?id={ShoppingCartViewModel.OrderHeader.Id}",
+                CancelUrl = domain + $"customer/cart/index",
+            };
 
-                foreach (var item in ShoppingCartViewModel.ShoppingCarts)
-                {
+            foreach (var item in ShoppingCartViewModel.ShoppingCarts)
+            {
 
-                    var sessionLineItem = new SessionLineItemOptions
+                var sessionLineItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
                     {
-                        PriceData = new SessionLineItemPriceDataOptions
+                        UnitAmount = (long)(item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT) * 100), //20.00 -> 2000
+                        Currency = "sek",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            UnitAmount = (long)(item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT) * 100), //20.00 -> 2000
-                            Currency = "sek",
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
-                            {
-                                Name = item.Product.Title,
-                            },
-
+                            Name = item.Product.Title,
                         },
-                        Quantity = item.Count,
-                    };
-                    options.LineItems.Add(sessionLineItem);
-                }
 
-                var service = new SessionService();
-                Session session = service.Create(options);
-
-                //Update orderheader table.
-                ShoppingCartViewModel.OrderHeader.SessionId = session.Id;
-                ShoppingCartViewModel.OrderHeader.PaymentIntentId = session.PaymentIntentId;
-                await _orderHeader.Entity.UpdateAsync(ShoppingCartViewModel.OrderHeader);
-                await _orderHeader.CompleteAsync();
-
-                Response.Headers.Add("Location", session.Url);
-                return new StatusCodeResult(303);
+                    },
+                    Quantity = item.Count,
+                };
+                options.LineItems.Add(sessionLineItem);
             }
 
-            return RedirectToAction(actionName: "Index", controllerName: "Home");
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            //Update orderheader table.
+            ShoppingCartViewModel.OrderHeader.SessionId = session.Id;
+            ShoppingCartViewModel.OrderHeader.PaymentIntentId = session.PaymentIntentId;
+            await _orderHeader.Entity.UpdateAsync(ShoppingCartViewModel.OrderHeader);
+            await _orderHeader.CompleteAsync();
+
+            Response.Headers.Add("Location", session.Url);
+            return new StatusCodeResult(303);
         }
 
         public async Task<IActionResult> OrderConfirmed(int id)
         {
             var orderHeaderInDb = await _orderHeader.Entity.GetFirstOrDefaultAsync(o => o.Id == id, includeProperties: "ApplicationUser");
 
-            var service = new SessionService();
-            Session session = service.Get(orderHeaderInDb.SessionId);
-
             if (!orderHeaderInDb.PaymentStatus.Equals(Status.Payment.Delayed.ToString()))
             {
+                var service = new SessionService();
+                Session session = service.Get(orderHeaderInDb.SessionId);
 
                 // Check stripe status.
                 if (session.PaymentStatus.ToLower().Equals("paid"))
