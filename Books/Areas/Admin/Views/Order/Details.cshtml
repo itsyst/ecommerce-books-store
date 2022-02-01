@@ -2,320 +2,346 @@
 @model Books.Domain.ViewModels.OrderViewModel
 
 @{
-    ViewData["Title"] = "Order";
+	ViewData["Title"] = "Order";
 #pragma warning disable
 }
 
 <br />
 <div class="container-fluid">
-    <form method="post">
-        <div class="card">
-            <div class="card-header bg-secondary text-dark fw-bold fs-1 ml-0">
-                <div class="row">
-                    <div class="col-12 d-none d-md-block col-md-6 pb-1">
-                        <i class="fa fa-shopping-cart"></i><i class="bi bi-tags-fill text-success"></i> &nbsp; Order Summary
-                    </div>
-                    <div class="col-6 text-end">
-                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Orders</a>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-sm-12 col-lg-6 pb-4">
-                        <div class="row">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-dark fw-bold">Pick Up Details</span>
-                            </h4>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Name")</label>
-                            </div>
-                            @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                            {
-                                <div class="col-4">
-                                    <input asp-for="OrderHeader.FirstName" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
-                                </div>
-                                <div class="col-5">
-                                    <input asp-for="OrderHeader.LastName" readonly class="form-control" />
-                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="col-4">
-                                    <input asp-for="OrderHeader.FirstName" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
-                                </div>
-                                <div class="col-5">
-                                    <input asp-for="OrderHeader.LastName" readonly class="form-control" />
-                                    <span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
-                                </div>
-                            }
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Email")</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.ApplicationUser.Email" readonly type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Phone")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                                {
-                                    <input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.PhoneNumber" readonly type="text" class="form-control" />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Address")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                                {
-                                    <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.StreetAddress" readonly type="text" class="form-control" />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("City")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                                {
-                                    <input asp-for="OrderHeader.City" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.City" readonly type="text" class="form-control" />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("State")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                                {
-                                    <input asp-for="OrderHeader.State" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.State" readonly type="text" class="form-control" />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Zip Code")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
-                                {
-                                    <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
-                                    <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
-                                }
-                                else
-                                {
-                                    <input asp-for="OrderHeader.PostalCode" readonly type="text" class="form-control" />
-                                }
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Order Date")</label>
-                            </div>
-                            <div class="col-9">
-                                <input value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly type="text" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Carrier")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                                {
-                                     <input asp-for="OrderHeader.Carrier" id="carrier" type="text" class="form-control" />
-                                }
-                                else
-                                {
-                                     <input asp-for="OrderHeader.Carrier" readonly type="text" class="form-control" />
-                                } 
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Tracking")</label>
-                            </div>
-                            <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                                {
-                                     <input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
-                                }
-                                else
-                                {
-                                     <input asp-for="OrderHeader.TrackingNumber" readonly type="text" class="form-control" />
-                                 } 
-                            </div>
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Shipping Date")</label>
-                            </div>
-                            <div class="col-9">
-                                <input value="@Model.OrderHeader.ShippingDate.ToShortDateString()" type="text" readonly class="form-control" />
-                            </div> 
-                        </div>
-                        @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                        {
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>@Html.DisplayName("Session Id")</label>
-                                </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.SessionId" type="text" readonly class="form-control" />
-                                </div>
-                            </div>
-                            <div class="row my-1">
-                                <div class="col-3">
-                                    <label>@Html.DisplayName("Intent Id")</label>
-                                </div>
-                                <div class="col-9">
-                                    <input asp-for="OrderHeader.PaymentIntentId" type="text" readonly class="form-control" />
-                                </div>
-                            </div>
-                        }
-                        <div class="row my-1">
-                            @if (Model.OrderHeader.SessionId == null)
-                            {
-                            <div class="col-3">Payment Due Date</div>
-                                <div class="col-9">
-                                <input value="@Model.OrderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="form-control" />
-                            </div>
-                            }
-                            else
-                            {
-                            <div class="col-3">Payment Date</div>
-                                <div class="col-9">
-                                <input value="@Model.OrderHeader.PaymentDate.ToShortDateString()" readonly id="paymentDate" type="text" class="form-control" />
-                            </div>
-                            } 
-                        </div>
-                        <div class="row my-1">
-                            <div class="col-3">
-                                <label>@Html.DisplayName("Status")</label>
-                            </div>
-                            <div class="col-9">
-                                <input asp-for="OrderHeader.PaymentStatus" type="text" readonly class="form-control" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-5 offset-lg-1">
-                        <h4 class="d-flex justify-content-between align-items-center mb-3">
-                            <span class="text-dark fw-bold">Order Summary</span>
-                        </h4>
-                        <ul class="list-group mb-3">
-                            <li class="list-group-item bg-light">
-                                <div class="list-group-item d-flex justify-content-between">
-                                    <div class="col-4">
-                                        <h5 class="text-muted fw-bold">Order Status </h5>
-                                    </div>
-                                    <div class="col-4 text-end">
-                                        <h5 class="text-primary fw-bold">@Model.OrderHeader.OrderStatus</h5>
-                                    </div>
-                                </div>
-                            </li>
-                            @foreach (var detail in Model.OrderDetail)
-                            {
-                                <li class="list-group-item d-flex justify-content-between p-2">
-                                    <div class="row container">
-                                        <div class="col-8">
+	<form method="post" enctype="multipart/form-data">
+		<div asp-validation-summary="All" class="text-danger"></div>
+		<input asp-for="OrderHeader.Id" hidden />
+		<div class="card">
+			<div class="card-header bg-secondary text-dark fw-bold fs-1 ml-0">
+				<div class="row">
+					<div class="col-12 d-none d-md-block col-md-6 pb-1">
+						<i class="fa fa-shopping-cart"></i><i class="bi bi-tags-fill text-success"></i> &nbsp; Order Summary
+					</div>
+					<div class="col-6 text-end">
+						<a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Orders</a>
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-12 col-lg-6 pb-4">
+						<div class="row">
+							<h4 class="d-flex justify-content-between align-items-center mb-3">
+								<span class="text-dark fw-bold">Pick Up Details</span>
+							</h4>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Name")</label>
+							</div>
+							@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+							{
+								<div class="col-4">
+									<input asp-for="OrderHeader.FirstName" readonly class="form-control" />
+									<span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+								</div>
+								<div class="col-5">
+									<input asp-for="OrderHeader.LastName" readonly class="form-control" />
+									<span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+								</div>
+							}
+							else
+							{
+								<div class="col-4">
+									<input asp-for="OrderHeader.FirstName" readonly class="form-control" />
+									<span asp-validation-for="OrderHeader.FirstName" class="text-danger"></span>
+								</div>
+								<div class="col-5">
+									<input asp-for="OrderHeader.LastName" readonly class="form-control" />
+									<span asp-validation-for="OrderHeader.LastName" class="text-danger"></span>
+								</div>
+							}
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Email")</label>
+							</div>
+							<div class="col-9">
+								<input asp-for="OrderHeader.ApplicationUser.Email" readonly type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Phone")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+								{
+									<input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
+								}
+								else
+								{
+									<input asp-for="OrderHeader.PhoneNumber" readonly type="text" class="form-control" />
+								}
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Address")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+								{
+									<input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
+								}
+								else
+								{
+									<input asp-for="OrderHeader.StreetAddress" readonly type="text" class="form-control" />
+								}
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("City")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+								{
+									<input asp-for="OrderHeader.City" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+								}
+								else
+								{
+									<input asp-for="OrderHeader.City" readonly type="text" class="form-control" />
+								}
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("State")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+								{
+									<input asp-for="OrderHeader.State" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+								}
+								else
+								{
+									<input asp-for="OrderHeader.State" readonly type="text" class="form-control" />
+								}
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Zip Code")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+								{
+									<input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
+									<span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
+								}
+								else
+								{
+									<input asp-for="OrderHeader.PostalCode" readonly type="text" class="form-control" />
+								}
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Order Date")</label>
+							</div>
+							<div class="col-9">
+								<input value="@Model.OrderHeader.OrderDate.ToShortDateString()" readonly type="text" class="form-control" />
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Carrier")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
+								{
+									 <input asp-for="OrderHeader.Carrier" id="carrier" type="text" class="form-control" />
+								}
+								else
+								{
+									 <input asp-for="OrderHeader.Carrier" readonly type="text" class="form-control" />
+								} 
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Tracking")</label>
+							</div>
+							<div class="col-9">
+								@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
+								{
+									 <input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
+								}
+								else
+								{
+									 <input asp-for="OrderHeader.TrackingNumber" readonly type="text" class="form-control" />
+								 } 
+							</div>
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Shipping Date")</label>
+							</div>
+							<div class="col-9">
+								<input value="@Model.OrderHeader.ShippingDate.ToShortDateString()" type="text" readonly class="form-control" />
+							</div> 
+						</div>
+						@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
+						{
+							<div class="row my-1">
+								<div class="col-3">
+									<label>@Html.DisplayName("Session Id")</label>
+								</div>
+								<div class="col-9">
+									<input asp-for="OrderHeader.SessionId" type="text" readonly class="form-control" />
+								</div>
+							</div>
+							<div class="row my-1">
+								<div class="col-3">
+									<label>@Html.DisplayName("Intent Id")</label>
+								</div>
+								<div class="col-9">
+									<input asp-for="OrderHeader.PaymentIntentId" type="text" readonly class="form-control" />
+								</div>
+							</div>
+						}
+						<div class="row my-1">
+							@if (Model.OrderHeader.SessionId == null)
+							{
+							<div class="col-3">Payment Due Date</div>
+								<div class="col-9">
+								<input value="@Model.OrderHeader.PaymentDueDate.ToShortDateString()" readonly type="text" class="form-control" />
+							</div>
+							}
+							else
+							{
+							<div class="col-3">Payment Date</div>
+								<div class="col-9">
+								<input value="@Model.OrderHeader.PaymentDate.ToShortDateString()" readonly id="paymentDate" type="text" class="form-control" />
+							</div>
+							} 
+						</div>
+						<div class="row my-1">
+							<div class="col-3">
+								<label>@Html.DisplayName("Status")</label>
+							</div>
+							<div class="col-9">
+								<input asp-for="OrderHeader.PaymentStatus" type="text" readonly class="form-control" />
+							</div>
+						</div>
+					</div>
+					<div class="col-12 col-lg-5 offset-lg-1">
+						<h4 class="d-flex justify-content-between align-items-center mb-3">
+							<span class="text-dark fw-bold">Order Summary</span>
+						</h4>
+						<ul class="list-group mb-3">
+							<li class="list-group-item bg-light">
+								<div class="list-group-item d-flex justify-content-between">
+									<div class="col-4">
+										<h5 class="text-muted fw-bold">Order Status </h5>
+									</div>
+									<div class="col-4 text-end">
+										<h5 class="text-primary fw-bold">@Model.OrderHeader.OrderStatus</h5>
+									</div>
+								</div>
+							</li>
+							@foreach (var detail in Model.OrderDetail)
+							{
+								<li class="list-group-item d-flex justify-content-between p-2">
+									<div class="row container">
+										<div class="col-8">
 
-                                            <h6 class="my-0 text-primary">@detail.Product.Title</h6>
-                                            <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
-                                            <small class="text-muted">Quantity : @detail.Count</small>
-                                        </div>
-                                        <div class="col-4 text-end">
-                                            <p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                            <li class="list-group-item bg-light">
-                                <div class="list-group-item d-flex justify-content-between">
-                                    <div class="col-4">
-                                        <h5 class="text-muted fw-bold">TOTAL </h5>
-                                    </div>
-                                    <div class="col-4 text-end">
-                                        <h5 class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="col-12 col-md-4 offset-md-8">
-                            @if (Model.OrderHeader.PaymentStatus.Equals(Status.Payment.Delayed) &&
-                            Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Shipped))
-                            {
-                                <input type="submit" class="btn btn-success form-control p-1" value="Pay Now" />
-                            }
-                            @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                            {
-                                if (Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Approved))
-                                {
-                                    <input type="submit" asp-action="StartProcessing" class="btn btn-primary form-control p-1" value="Process" />
-                                }
-                                if (Model.OrderHeader.OrderStatus.Equals(Status.StatusType.InProgress))
-                                {
-                                    <input type="submit" onclick="return validateInput()"
-                                   asp-action="ShipOrder" class="btn btn-primary form-control p-1" value="Ship" />
-                                }
+											<h6 class="my-0 text-primary">@detail.Product.Title</h6>
+											<small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
+											<small class="text-muted">Quantity : @detail.Count</small>
+										</div>
+										<div class="col-4 text-end">
+											<p class="text-success">@((detail.Count * detail.Price).ToString("c"))</p>
+										</div>
+									</div>
+								</li>
+							}
+							<li class="list-group-item bg-light">
+								<div class="list-group-item d-flex justify-content-between">
+									<div class="col-4">
+										<h5 class="text-muted fw-bold">TOTAL </h5>
+									</div>
+									<div class="col-4 text-end">
+										<h5 class="text-dark fw-bold">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div class="col-12">
+							@if (Model.OrderHeader.PaymentStatus.Equals(Status.Payment.Delayed.ToString()) &&
+							Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Shipped.ToString()))
+							{
+								 <input type="submit" class="btn btn-success form-control p-1 mb-1" value="Pay Now" />
+							}
+							@if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
+							{
+								if (Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Approved.ToString()))
+								{
+									<input type="submit" asp-action="Process" class="btn btn-primary form-control p-1 mb-1" value="Process" />
+								}
+								if (Model.OrderHeader.OrderStatus.Equals(Status.StatusType.InProgress.ToString()))
+								{
+									<input type="submit" onclick="return validateInput()"
+								   asp-action="Ship" class="btn btn-dark form-control p-1 mb-1" value="Ship" />
+								}
 
-                                @if ((!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Refunded)) &&
-                                (!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Canceled)) &&
-                                (!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Shipped)))
-                                {
-                                    <input type="submit" asp-action="CancelOrder" class="btn btn-danger form-control p-1" value="Cancel" />
-                                }
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <div class="row">
-                    <p class="col-12 col-md-8 pt-2 text-warning">
-                        <span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(3).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
-                    </p>
-                    <div class="col-12 col-md-2 offset-md-2">
-                        <input type="submit" asp-action="Update" class="btn btn-primary form-control my-1" value="Update" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <input asp-for="OrderHeader.Id" hidden />
-    </form>
+								@if ((!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Refunded.ToString())) &&
+								(!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Canceled.ToString())) &&
+								(!Model.OrderHeader.OrderStatus.Equals(Status.StatusType.Shipped.ToString())))
+								{
+									<input type="submit" asp-action="Cancel" class="btn btn-danger form-control p-1" value="Cancel" />
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				<div class="row">
+					<p class="col-12 col-md-8 pt-2 text-warning">
+						<span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(3).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
+					</p>
+					<div class="col-12 col-md-2 offset-md-2">
+						<input type="submit" asp-action="Update" class="btn btn-primary form-control my-1" value="Update" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>
 
+@section Scripts{
+	<partial name="_ValidationScriptsPartial" />
+<script>
+	function validateInput(){
+		if(document.getElementById("trackingNumber").value==""){
+			Swal.fire({
+			  icon: 'error',
+			  title: 'Oops...',
+			  text: 'Please enter tracking number!',
+			});
+			return false;
+		}
+		if(document.getElementById("carrier").value==""){
+			Swal.fire({
+			  icon: 'error',
+			  title: 'Oops...',
+			  text: 'Please enter carrier!',
+			});
+			return false;
+		}
+		return true;
+	}
+</script>
+
+}
