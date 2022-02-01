@@ -4,6 +4,7 @@ using Books.Data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Books.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220201223903_MakeComapanyIdNullableInApplicationUserTable")]
+    partial class MakeComapanyIdNullableInApplicationUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,10 +184,10 @@ namespace Books.Data.Migrations
                     b.Property<double>("OrderTotal")
                         .HasColumnType("float");
 
-                    b.Property<DateTime?>("PaymentDate")
+                    b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("PaymentDueDate")
+                    b.Property<DateTime>("PaymentDueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentIntentId")
@@ -208,7 +210,7 @@ namespace Books.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("ShippingDate")
+                    b.Property<DateTime>("ShippingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("State")

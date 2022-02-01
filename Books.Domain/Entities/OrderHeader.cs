@@ -60,12 +60,16 @@ namespace Books.Domain.Entities
         public string PaymentStatus { get; set; } = string.Empty;
         public string PaymentIntentId { get; set; } = string.Empty;
         public string SessionId { get; set; } = string.Empty;
+
         [DataType(DataType.DateTime)]
-        public DateTime ShippingDate { get; set; }
+        public DateTime? ShippingDate { get; set; } = null;
+
         [DataType(DataType.DateTime)]
-        public DateTime PaymentDate { get; set; }
+        public DateTime? PaymentDate { get; set; } = null;
+
         [DataType(DataType.DateTime)]
-        public DateTime PaymentDueDate { get; set; }
+        public DateTime? PaymentDueDate { get; set; } = null;
+
         public string? TrackingNumber { get; set; }
         public string? Carrier { get; set; }
 
