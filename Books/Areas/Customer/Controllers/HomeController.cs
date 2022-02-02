@@ -68,6 +68,10 @@ namespace Books.Controllers
             {
                 await _shoppingCart.Entity.InsertAsync(shoppingCart);
                 await _shoppingCart.CompleteAsync();
+
+                product.InStock -= shoppingCart.Count;
+                await _product.Entity.UpdateAsync(product);
+                await _product.CompleteAsync();
             }
 
             else
