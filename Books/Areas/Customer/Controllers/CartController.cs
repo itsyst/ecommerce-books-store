@@ -287,7 +287,7 @@ namespace Books.Areas.Customer.Controllers
             }
 
             var service = new SessionService();
-            Session session = service.Create(options);
+            Stripe.Checkout.Session session = service.Create(options);
 
             //Update orderheader table.
             ShoppingCartViewModel.OrderHeader.SessionId = session.Id;
@@ -306,7 +306,7 @@ namespace Books.Areas.Customer.Controllers
             if (!orderHeaderInDb.PaymentStatus.Equals(Status.Payment.Delayed.ToString()))
             {
                 var service = new SessionService();
-                Session session = service.Get(orderHeaderInDb.SessionId);
+                Stripe.Checkout.Session session = service.Get(orderHeaderInDb.SessionId);
 
                 // Check stripe status.
                 if (session.PaymentStatus.ToLower().Equals("paid"))
