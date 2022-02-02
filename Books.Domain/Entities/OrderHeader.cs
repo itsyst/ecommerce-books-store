@@ -58,8 +58,8 @@ namespace Books.Domain.Entities
         // Stripe Configutation.
         public string? OrderStatus { get; set; }
         public string PaymentStatus { get; set; } = string.Empty;
-        public string PaymentIntentId { get; set; } = string.Empty;
-        public string SessionId { get; set; } = string.Empty;
+        public string? PaymentIntentId { get; set; }
+        public string? SessionId { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime? ShippingDate { get; set; } = null;
