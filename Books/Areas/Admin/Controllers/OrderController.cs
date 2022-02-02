@@ -272,6 +272,7 @@ namespace Books.Areas.Admin.Controllers
             else
             {
                 orderHeaderInDB.OrderStatus = Status.StatusType.Canceled.ToString();
+                orderHeaderInDB.PaymentStatus = Status.StatusType.Canceled.ToString();
             }
 
             // Recalculate product count in stock
