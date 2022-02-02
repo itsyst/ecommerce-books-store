@@ -46,7 +46,7 @@ namespace Books.Areas.Customer.Controllers
 
             ShoppingCartViewModel = new ShoppingCartViewModel()
             {
-                ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties:p=>p.Product),
+                ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: p => p.Product),
                 OrderHeader = new()
             };
 
@@ -158,7 +158,7 @@ namespace Books.Areas.Customer.Controllers
             {
                 ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(
                 c => c.ApplicationUserId == userId,
-                includeProperties: p=>p.Product),
+                includeProperties: p => p.Product),
                 OrderHeader = new()
             };
 
@@ -184,7 +184,7 @@ namespace Books.Areas.Customer.Controllers
             return View(ShoppingCartViewModel);
         }
 
- 
+
         /// <summary>
         /// Show Order summary.
         /// </summary>
@@ -197,22 +197,22 @@ namespace Books.Areas.Customer.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = await _applicationUser.Entity.GetFirstOrDefaultAsync(a => a.Id == userId, includeProperties: "Company");
 
-            ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: p=>p.Product);
+            ShoppingCartViewModel.ShoppingCarts = await _shoppingCart.Entity.GetAllAsync(c => c.ApplicationUserId == userId, includeProperties: p => p.Product);
 
             // Shipping Details
             ShoppingCartViewModel.OrderHeader.OrderDate = DateTime.Now;
             ShoppingCartViewModel.OrderHeader.ApplicationUserId = userId;
             ShoppingCartViewModel.OrderHeader.Company = appUser.Company;
 
-            if(appUser.CompanyId != 0)
-            {
-                ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Delayed.ToString();
-                ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Approved.ToString();
-            }
-            else
+            if (appUser.CompanyId.GetValueOrDefault() == 0)
             {
                 ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Pending.ToString();
                 ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Pending.ToString();
+            }
+            else
+            {
+                ShoppingCartViewModel.OrderHeader.PaymentStatus = Status.Payment.Delayed.ToString();
+                ShoppingCartViewModel.OrderHeader.OrderStatus = Status.StatusType.Approved.ToString();
             }
 
 
@@ -249,8 +249,8 @@ namespace Books.Areas.Customer.Controllers
             await _shoppingCart.CompleteAsync();
 
             // Stripe settings
-            if (appUser.CompanyId != 0)
-                return RedirectToAction(actionName: "Index", controllerName: "Home");
+            if (appUser.CompanyId.GetValueOrDefault() != 0)
+                return RedirectToAction("OrderConfirmed", "Cart", new { id = ShoppingCartViewModel.OrderHeader.Id });
 
             //stripe settings 
             var domain = "https://localhost:44376/";
@@ -313,6 +313,7 @@ namespace Books.Areas.Customer.Controllers
                 {
                     orderHeaderInDb.OrderStatus = Status.StatusType.Approved.ToString();
                     orderHeaderInDb.PaymentStatus = Status.Payment.Approved.ToString();
+                    orderHeaderInDb.PaymentDate = DateTime.Now;
 
                     await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
                     await _orderHeader.CompleteAsync();
@@ -320,7 +321,7 @@ namespace Books.Areas.Customer.Controllers
             }
 
             // Retreive shoppingcarts from the database.
-            var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: p=>p.Product);
+            var shoppingCartsInDb = await _shoppingCart.Entity.GetAllAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: p => p.Product);
 
             // Remove shopping carts from database.
             await _shoppingCart.Entity.DeleteRangeAsync(shoppingCartsInDb);
