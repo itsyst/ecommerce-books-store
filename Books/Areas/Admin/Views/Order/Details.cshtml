@@ -257,7 +257,7 @@
                                         <div class="col-8">
 
                                             <h6 class="my-0 text-primary">@detail.Product.Title</h6>
-                                            <small class="text-muted">Price : @detail.Price.ToString("c")</small><br />
+                                            <small class="text-muted">Price : <strike>@((detail.Price/Rabat.DISCOUNT).ToString("c"))</strike></small><br />
                                             <small class="text-muted">Quantity : @detail.Count</small>
                                         </div>
                                         <div class="col-4 text-end">

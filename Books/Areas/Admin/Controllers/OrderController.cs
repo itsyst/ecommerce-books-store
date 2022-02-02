@@ -60,7 +60,7 @@ namespace Books.Areas.Admin.Controllers
             OrderViewModel = new()
             {
                 OrderHeader = await _orderHeader.Entity.GetFirstOrDefaultAsync(o => o.Id == id, includeProperties: "ApplicationUser"),
-                OrderDetail = await _orderDetail.Entity.GetAllAsync(filter: o => o.Id == id, p => p.Product, h => h.OrderHeader),
+                OrderDetail = await _orderDetail.Entity.GetAllAsync(filter: o => o.OrderId == id, p => p.Product, h => h.OrderHeader),
             };
 
 
@@ -82,7 +82,7 @@ namespace Books.Areas.Admin.Controllers
             if (OrderViewModel.OrderHeader == null)
                 return NotFound();
 
-            OrderViewModel.OrderDetail = await _orderDetail.Entity.GetAllAsync(filter: o => o.Id == OrderViewModel.OrderHeader.Id, p => p.Product, h => h.OrderHeader);
+            OrderViewModel.OrderDetail = await _orderDetail.Entity.GetAllAsync(filter: o => o.OrderId == OrderViewModel.OrderHeader.Id, p => p.Product, h => h.OrderHeader);
 
             //stripe settings 
             var domain = "https://localhost:44376/";
@@ -119,7 +119,7 @@ namespace Books.Areas.Admin.Controllers
             }
 
             var service = new SessionService();
-            Session session = service.Create(options);
+            Stripe.Checkout.Session session = service.Create(options);
 
             //Update orderheader table.
             OrderViewModel.OrderHeader.SessionId = session.Id;
@@ -138,7 +138,7 @@ namespace Books.Areas.Admin.Controllers
             if (orderHeaderInDb.PaymentStatus.Equals(Status.Payment.Delayed.ToString()))
             {
                 var service = new SessionService();
-                Session session = service.Get(orderHeaderInDb.SessionId);
+                Stripe.Checkout.Session session = service.Get(orderHeaderInDb.SessionId);
 
                 // Check stripe status.
                 if (session.PaymentStatus.ToLower().Equals("paid"))
