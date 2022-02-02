@@ -1,5 +1,7 @@
 ﻿@page
 @model RegisterModel
+@using Books.Utilities;
+
 @{
     ViewData["Title"] = "Register";
 #pragma warning disable
@@ -11,6 +13,7 @@
     <div class="col-md-8 mr-2">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2>Create a new account.</h2>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group row">
@@ -64,49 +67,70 @@
                     <label class="mx-2" asp-for="Input.ConfirmPassword"></label>
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
-            </div>
-            <div class="form-floating mb-3 col-12">
-                <input asp-for="Input.Company.Name" class="form-control" autocomplete="companyname" aria-required="true" />
-                <label class="ml-2" for="Input.Company.Name">Company</label>
-                <span asp-validation-for="Input.Company.Name" class="text-danger"></span>
+                <div class="form-floating  mb-3  2 col-6">
+                    <select asp-for="Input.Role"  style="padding-block:2px" asp-items="@Model.Input.Roles" class=form-select>
+                        <option selected disabled>Select Role</option>
+                    </select>
+                </div>
+                <div class="form-floating  mb-3  col-6">
+                    <select asp-for="Input.CompanyId" style="display:none; padding-block:2px" asp-items="@Model.Input.Companies" class=form-select>
+                        <option selected disabled>Select Company</option>
+                    </select>
+                </div>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-4 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                article
-                                about setting up this ASP.NET application to support logging in via external services
-                            </a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+    @if (!User.IsInRole(Roles.RoleType.Admin.ToString()))
+    {
+        <div class="col-md-4 col-md-offset-2">
+            <section>
+                <h3>Use another service to register.</h3>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                    article
+                                    about setting up this ASP.NET application to support logging in via external services
+                                </a>.
                             </p>
                         </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
-    </div>
+            </section>
+        </div>
+    }
 </div>
 
 @section Scripts {
 <partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function(){
+        $('#Input_Role').change(function(){
+            var selection= $('#Input_Role Option:Selected').text();
+            if(selection === 'Company'){
+                $('#Input_Company_Id').show();
+            }
+            else {
+                 $('#Input_Company_Id').hide();
+            }
+        })
+    })
+</script>
 }

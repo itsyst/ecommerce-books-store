@@ -3,13 +3,16 @@
 #nullable disable
 
 using Books.Domain.Entities;
+using Books.Interfaces;
 using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -22,6 +25,7 @@ namespace Books.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUnitOfWork<Company> _company;
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -30,6 +34,7 @@ namespace Books.Areas.Identity.Pages.Account
         public RegisterModel(
             RoleManager<IdentityRole> roleManager,
             UserManager<IdentityUser> userManager,
+            IUnitOfWork<Company> company,
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
@@ -37,6 +42,7 @@ namespace Books.Areas.Identity.Pages.Account
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _company = company;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
@@ -125,24 +131,37 @@ namespace Books.Areas.Identity.Pages.Account
             public string PhoneNumber { get; set; }
 
             [Display(Name = "Company Name")]
-            public Company Company { get; set; } = null;
+            public int? CompanyId { get; set; } = null;
 
+            public string Role { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Roles { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Companies { get; set; }
         }
 
 
         public async Task OnGetAsync(string returnUrl = null)
         {
-            foreach (var item in Roles.GetAllRoles)
-            {
-                if (!await _roleManager.RoleExistsAsync(item.ToString()))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(item.ToString()));
-                }
-
-            }
-
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            IEnumerable<Company> companies = await _company.Entity.GetAllAsync();
+
+            Input = new InputModel()
+            {
+                Roles = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                }).Where(r => r.Value.Equals(Roles.RoleType.Company.ToString()) || r.Value.Equals(Roles.RoleType.Individual.ToString())),
+           
+                Companies = companies.Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                }),
+            };
         }
 
 
@@ -163,18 +182,10 @@ namespace Books.Areas.Identity.Pages.Account
                 user.City = Input.City;
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
-                user.Company = new()
+                if (Input.Role.Equals(Roles.RoleType.Company.ToString()))
                 {
-                    Id = Input.Company.Id,
-                    Name = Input.Company.Name,
-                    PhoneNumber = Input.PhoneNumber,
-                    StreetAddress = Input.StreetAddress,
-                    City = Input.City,
-                    State = Input.State,
-                    PostalCode = Input.PostalCode
-                };
-
-
+                    user.CompanyId = Input.CompanyId;
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -212,7 +223,6 @@ namespace Books.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
 
