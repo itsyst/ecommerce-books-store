@@ -1,13 +1,15 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Books.Models
+@using Microsoft.AspNetCore.Identity
 
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="manage" class="nav-link text-dark my-2 mx-1 my-sm-0" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="bi bi-person-badge text-success"></i> Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link text-dark my-2 mx-1 my-sm-0" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="bi bi-person-badge text-success"></i> Hello @(User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value)!</a>
         </li>
         <li class="nav-item my-2 mx-1 my-sm-0">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

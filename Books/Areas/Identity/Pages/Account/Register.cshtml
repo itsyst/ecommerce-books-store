@@ -123,13 +123,11 @@
 <script>
     $(document).ready(function(){
         $('#Input_Role').change(function(){
-            var selection= $('#Input_Role Option:Selected').text();
-            if(selection === 'Company'){
-                $('#Input_Company_Id').show();
-            }
-            else {
-                 $('#Input_Company_Id').hide();
-            }
+            var selection = $('#Input_Role Option:Selected').text();
+            if(selection.toLowerCase() === 'company')
+                $('#Input_CompanyId').show();
+            else
+                $('#Input_CompanyId').hide();
         })
     })
 </script>
