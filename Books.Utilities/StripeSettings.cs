@@ -4,5 +4,6 @@
     {
         public string SecretKey { get; set; } = string.Empty;
         public string PublishableKey { get; set; } = string.Empty;
+        public string url { get; set; } = string.Empty;
     }
 }
