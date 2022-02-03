@@ -100,10 +100,11 @@
                                 {
                                     <li class="list-group-item d-flex justify-content-between">
                                         <div>
-                                            <h6 class="my-0">@item.Product.Title</h6>
+                                            <h6 class="my-0">@item.Product.Title</h6> 
+                                            <small class="text-muted">Price:<strike>@item.PriceHolder.ToString("c")</strike></small><br>
                                             <small class="text-muted">Quantity: @item.Count</small>
                                         </div>
-                                        <span class="text-muted">@((item.PriceHolder * item.Count).ToString("c")) </span>
+                                        <span class="text-muted">@(item.SetPriceHolderRabat(@item.PriceHolder*Rabat.DISCOUNT).ToString("c")) </span>
                                     </li>
                                 }
                                 <li class="list-group-item d-flex justify-content-between bg-light">
