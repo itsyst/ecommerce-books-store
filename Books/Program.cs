@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using Stripe;
 using Books.Models;
 using Books.Domain.ViewModels;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

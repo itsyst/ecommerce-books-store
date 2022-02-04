@@ -21,6 +21,7 @@ namespace Books.Areas.Customer.Controllers
         private readonly IUnitOfWork<ApplicationUser> _applicationUser;
         private readonly IUnitOfWork<OrderHeader> _orderHeader;
         private readonly IUnitOfWork<OrderDetail> _orderDetail;
+        private IConfiguration _configuration { get; }
 
         [BindProperty]
         public ShoppingCartViewModel ShoppingCartViewModel { get; set; }
@@ -30,13 +31,15 @@ namespace Books.Areas.Customer.Controllers
             IUnitOfWork<ShoppingCart> shoppingCart,
             IUnitOfWork<ApplicationUser> applicationUser,
             IUnitOfWork<OrderHeader> orderHeader,
-            IUnitOfWork<OrderDetail> orderDetail)
+            IUnitOfWork<OrderDetail> orderDetail,
+            IConfiguration configuration)
         {
             _product = product;
             _shoppingCart = shoppingCart;
             _applicationUser = applicationUser;
             _orderHeader = orderHeader;
             _orderDetail = orderDetail;
+            _configuration = configuration;
         }
 
         // GET: CartController
@@ -253,7 +256,7 @@ namespace Books.Areas.Customer.Controllers
                 return RedirectToAction("OrderConfirmed", "Cart", new { id = ShoppingCartViewModel.OrderHeader.Id });
 
             //stripe settings 
-            var domain = "https://localhost:44376/";
+            var domain = _configuration["StripeSettings:url"];
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
