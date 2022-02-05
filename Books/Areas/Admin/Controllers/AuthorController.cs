@@ -1,13 +1,14 @@
 ﻿using Books.Domain.Entities;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Controllers
 {
 #pragma warning disable
-
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AuthorController : Controller
     {
         private readonly IUnitOfWork<Author> _author;
@@ -20,7 +21,7 @@ namespace Books.Controllers
         // GET: Author
         public async Task<IActionResult> Index()
         {
-            var authors = await _author.Entity.GetAllAsync(filter: null, includeProperties: a=>a.Products);
+            var authors = await _author.Entity.GetAllAsync(filter: null, includeProperties: a => a.Products);
             return View(authors);
         }
 

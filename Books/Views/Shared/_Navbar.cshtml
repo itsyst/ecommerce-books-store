@@ -10,7 +10,7 @@
         </button>
         <div class="navbar-collapse collapse row">
             <ul class="navbar-nav ">
-                @if (@*User.Identity.IsAuthenticated &&*@ User.IsInRole(Roles.RoleType.Admin.ToString()))
+                @if (User.Identity.IsAuthenticated && User.IsInRole(Roles.RoleType.Admin.ToString()))
                 {
                     <li class="nav-item dropdown px-2">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Manager</a>

@@ -1,6 +1,7 @@
 ﻿using Books.Domain.Entities;
 using Books.Domain.ViewModels;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SixLabors.ImageSharp;
@@ -9,7 +10,7 @@ using SixLabors.ImageSharp.Processing;
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
-
+    [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork<Product> _product;

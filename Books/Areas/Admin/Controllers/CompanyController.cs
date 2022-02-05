@@ -1,10 +1,12 @@
 ﻿using Books.Domain.Entities;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork<Company> _company;

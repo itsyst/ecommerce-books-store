@@ -1,11 +1,13 @@
 ﻿using Books.Domain.Entities;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class CoverController : Controller
     {
         private readonly IUnitOfWork<Cover> _cover;
