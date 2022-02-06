@@ -245,13 +245,7 @@ namespace Books.Areas.Customer.Controllers
                 await _orderDetail.CompleteAsync();
             }
 
-            // Decrease product count in stock
-            ShoppingCart? cart = await _shoppingCart.Entity.GetFirstOrDefaultAsync(u => u.ApplicationUserId == ShoppingCartViewModel.OrderHeader.ApplicationUserId, includeProperties: "Product");
-            cart.Product.InStock -= ShoppingCartViewModel.ShoppingCarts.Count<ShoppingCart>();
-            await _shoppingCart.Entity.UpdateAsync(cart);
-            await _shoppingCart.CompleteAsync();
-
-            // Stripe settings
+            // Check if individual or company user
             if (appUser.CompanyId.GetValueOrDefault() != 0)
                 return RedirectToAction("OrderConfirmed", "Cart", new { id = ShoppingCartViewModel.OrderHeader.Id });
 
@@ -260,9 +254,9 @@ namespace Books.Areas.Customer.Controllers
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
-            {
-                "card",
-            },
+                {
+                    "card",
+                },
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
                 SuccessUrl = domain + $"customer/cart/OrderConfirmed?id={ShoppingCartViewModel.OrderHeader.Id}",
@@ -276,21 +270,21 @@ namespace Books.Areas.Customer.Controllers
                 {
                     PriceData = new SessionLineItemPriceDataOptions
                     {
-                        UnitAmount = (long)(item.SetPriceHolderRabat(item.Count * item.Product.Price * Rabat.DISCOUNT) * 100), //20.00 -> 2000
+                        UnitAmount = (long)(item.SetPriceHolderRabat(item.Product.Price * Rabat.DISCOUNT) * 100), //20.00 -> 2000
                         Currency = "sek",
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
                             Name = item.Product.Title,
                         },
-
                     },
-                    Quantity = item.Count,
+                    Quantity = item.Count
                 };
                 options.LineItems.Add(sessionLineItem);
             }
 
             var service = new SessionService();
             Stripe.Checkout.Session session = service.Create(options);
+            session.ExpiresAt = DateTime.Now.AddSeconds(5);
 
             //Update orderheader table.
             ShoppingCartViewModel.OrderHeader.SessionId = session.Id;
@@ -320,6 +314,12 @@ namespace Books.Areas.Customer.Controllers
 
                     await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
                     await _orderHeader.CompleteAsync();
+
+                    // Decrease product count in stock
+                    ShoppingCart? cart = await _shoppingCart.Entity.GetFirstOrDefaultAsync(u => u.ApplicationUserId == ShoppingCartViewModel.OrderHeader.ApplicationUserId, includeProperties: "Product");
+                    cart.Product.InStock -= ShoppingCartViewModel.ShoppingCarts.Count<ShoppingCart>();
+                    await _shoppingCart.Entity.UpdateAsync(cart);
+                    await _shoppingCart.CompleteAsync();
                 }
             }
 
