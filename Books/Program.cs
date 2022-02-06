@@ -25,6 +25,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 // Bind stripe settings
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("StripeSettings"));
 
+// Bind EmailSender settings
+builder.Services.Configure<EmailSenderSettings>(builder.Configuration.GetSection("EmailSenderSettings"));
+
 // Authentication and authorization
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(/*options => options.SignIn.RequireConfirmedAccount = true*/)
     .AddEntityFrameworkStores<ApplicationDbContext>()
