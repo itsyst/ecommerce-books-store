@@ -4,6 +4,7 @@ using Books.Interfaces;
 using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Stripe.Checkout;
 using System.Security.Claims;
@@ -21,6 +22,8 @@ namespace Books.Areas.Customer.Controllers
         private readonly IUnitOfWork<ApplicationUser> _applicationUser;
         private readonly IUnitOfWork<OrderHeader> _orderHeader;
         private readonly IUnitOfWork<OrderDetail> _orderDetail;
+        private readonly IEmailSender _emailSender;
+
         private IConfiguration _configuration { get; }
 
         [BindProperty]
@@ -32,7 +35,8 @@ namespace Books.Areas.Customer.Controllers
             IUnitOfWork<ApplicationUser> applicationUser,
             IUnitOfWork<OrderHeader> orderHeader,
             IUnitOfWork<OrderDetail> orderDetail,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IEmailSender emailSender)
         {
             _product = product;
             _shoppingCart = shoppingCart;
@@ -40,6 +44,7 @@ namespace Books.Areas.Customer.Controllers
             _orderHeader = orderHeader;
             _orderDetail = orderDetail;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         // GET: CartController
@@ -292,6 +297,7 @@ namespace Books.Areas.Customer.Controllers
             await _orderHeader.Entity.UpdateAsync(ShoppingCartViewModel.OrderHeader);
             await _orderHeader.CompleteAsync();
 
+ 
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
@@ -315,9 +321,15 @@ namespace Books.Areas.Customer.Controllers
                     await _orderHeader.Entity.UpdateAsync(orderHeaderInDb);
                     await _orderHeader.CompleteAsync();
 
-                    // Decrease product count in stock
-                    ShoppingCart? cart = await _shoppingCart.Entity.GetFirstOrDefaultAsync(u => u.ApplicationUserId == ShoppingCartViewModel.OrderHeader.ApplicationUserId, includeProperties: "Product");
-                    cart.Product.InStock -= ShoppingCartViewModel.ShoppingCarts.Count<ShoppingCart>();
+                    await _emailSender.SendEmailAsync(orderHeaderInDb.ApplicationUser.Email,
+                        "New Order - Books webapp",
+                       $"<p>New order {orderHeaderInDb.Id} has been created.<p/>");
+
+                    // Decrease product in stock
+                    ShoppingCart? cart = await _shoppingCart.Entity.GetFirstOrDefaultAsync(u => u.ApplicationUserId == orderHeaderInDb.ApplicationUserId, includeProperties: "Product");
+                    OrderDetail detail = await _orderDetail.Entity.GetFirstOrDefaultAsync(u => u.OrderId == orderHeaderInDb.Id, includeProperties: "Product");
+
+                    cart.Product.InStock -= detail.Count;
                     await _shoppingCart.Entity.UpdateAsync(cart);
                     await _shoppingCart.CompleteAsync();
                 }

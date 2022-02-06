@@ -278,10 +278,7 @@ namespace Books.Areas.Admin.Controllers
             // Recalculate product count in stock
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var orderDetailInDB = await _orderDetail.Entity.GetFirstOrDefaultAsync(o => o.OrderId == orderHeaderInDB.Id, includeProperties: "Product");
-            var productInDB = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == orderDetailInDB.ProductId);
-
-            productInDB.InStock += orderDetailInDB.Count;
- 
+            var productInDB = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == orderDetailInDB.ProductId); 
             await _product.Entity.UpdateAsync(productInDB);
             await _product.CompleteAsync();
 
