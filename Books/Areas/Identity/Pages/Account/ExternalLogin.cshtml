@@ -15,19 +15,78 @@
 </p>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8 mr-2">
         <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-floating">
-                <input asp-for="Input.Email" class="form-control" autocomplete="email" />
-                <label asp-for="Input.Email" class="form-label"></label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            <div class="form-group row">
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.FirstName"></label>
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.LastName" class="form-control" autocomplete="lasttName" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.LastName"></label>
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.Email"></label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="phonenumber" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.PhoneNumber"></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.StreetAddress" class="form-control" autocomplete="StreetAddress" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.StreetAddress"></label>
+                    <span asp-validation-for="Input.StreetAddress" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.City" class="form-control" autocomplete="City" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.City"></label>
+                    <span asp-validation-for="Input.City" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.State" class="form-control" autocomplete="State" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.State"></label>
+                    <span asp-validation-for="Input.State" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <input asp-for="Input.PostalCode" class="form-control" autocomplete="postalcode" aria-required="true" />
+                    <label class="mx-2" asp-for="Input.PostalCode"></label>
+                    <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+                </div>
+                <div class="form-floating  mb-3  2 col-6">
+                    <select asp-for="Input.Role" style="padding-block:2px" asp-items="@Model.Input.Roles" class=form-select>
+                        <option selected disabled>Select Role</option>
+                    </select>
+                </div>
+                <div class="form-floating  mb-3  col-6">
+                    <select asp-for="Input.CompanyId" style="display:none; padding-block:2px" asp-items="@Model.Input.Companies" class=form-select>
+                        <option selected disabled>Select Company</option>
+                    </select>
+                </div>
             </div>
+
             <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+<partial name="_ValidationScriptsPartial" />
+<script>
+    $(document).ready(function(){
+        $('#Input_Role').change(function(){
+            var selection = $('#Input_Role Option:Selected').text();
+            if(selection.toLowerCase() === 'company')
+                $('#Input_CompanyId').show();
+            else
+                $('#Input_CompanyId').hide();
+        })
+    })
+</script>
 }

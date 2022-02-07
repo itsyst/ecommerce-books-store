@@ -2,12 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using Books.Domain.Entities;
+using Books.Interfaces;
 using Books.Models;
+using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
@@ -19,26 +24,32 @@ namespace Books.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IUnitOfWork<Company> _company;
 
         public ExternalLoginModel(
+            RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUnitOfWork<Company> company)
         {
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _company = company;
         }
 
         /// <summary>
@@ -80,6 +91,42 @@ namespace Books.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Required]
+            [MaxLength(55)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; } = string.Empty;
+
+            [Required]
+            [MaxLength(55)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; } = string.Empty;
+
+
+            [Display(Name = "Street Adress")]
+            public string StreetAddress { get; set; }
+
+            public string City { get; set; }
+
+            public string State { get; set; }
+
+            [Display(Name = "Postal Code")]
+            [DataType(DataType.PostalCode)]
+            public string PostalCode { get; set; }
+
+
+            [Display(Name = "Phone Number")]
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Company Name")]
+            public int? CompanyId { get; set; } = null;
+
+            public string Role { get; set; }
+
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Roles { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> Companies { get; set; }
         }
 
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -95,6 +142,7 @@ namespace Books.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetCallbackAsync(string returnUrl = null, string remoteError = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
@@ -123,11 +171,24 @@ namespace Books.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
+                IEnumerable<Company> companies = await _company.Entity.GetAllAsync();
+               
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
                     Input = new InputModel
                     {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        Roles = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                        {
+                            Text = i,
+                            Value = i
+                        }).Where(r => r.Value.Equals(Roles.RoleType.Company.ToString()) || r.Value.Equals(Roles.RoleType.Individual.ToString())),
+
+                        Companies = companies.Select(i => new SelectListItem
+                        {
+                            Text = i.Name,
+                            Value = i.Id.ToString()
+                        }),
                     };
                 }
                 return Page();
@@ -151,6 +212,17 @@ namespace Books.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.PhoneNumber = Input.PhoneNumber;
+                user.StreetAddress = Input.StreetAddress;
+                user.City = Input.City;
+                user.State = Input.State;
+                user.PostalCode = Input.PostalCode;
+                if (Input.Role.Equals(Roles.RoleType.Company.ToString()))
+                    user.CompanyId = Input.CompanyId;
+                else
+                    user.CompanyId = null;
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
