@@ -34,11 +34,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(/*options => options
     .AddSignInManager<SignInManager<ApplicationUser>>()
     .AddDefaultTokenProviders()
     .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>();
-builder.Services.AddAuthentication().AddFacebook(options =>
-{
-    options.AppId = builder.Configuration.GetSection("FacebookSettings:AppId").Get<string>();
-    options.AppSecret = builder.Configuration.GetSection("FacebookSettings:AppSecret").Get<string>();
-});
+builder.Services.AddAuthentication()
+    .AddFacebook(facebookOptions =>
+    {
+        facebookOptions.AppId = builder.Configuration.GetSection("FacebookSettings:AppId").Get<string>();
+        facebookOptions.AppSecret = builder.Configuration.GetSection("FacebookSettings:AppSecret").Get<string>();
+    })
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration.GetSection("GoogleSettings:ClientId").Get<string>();
+        googleOptions.ClientSecret = builder.Configuration.GetSection("GoogleSettings:ClientSecret").Get<string>();
+    });
 
 //Services configuration
 builder.Services.AddScoped<ApplicationUser>();

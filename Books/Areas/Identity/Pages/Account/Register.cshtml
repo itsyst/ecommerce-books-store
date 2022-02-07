@@ -68,7 +68,7 @@
                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <div class="form-floating  mb-3  2 col-6">
-                    <select asp-for="Input.Role"  style="padding-block:2px" asp-items="@Model.Input.Roles" class=form-select>
+                    <select asp-for="Input.Role" style="padding-block:2px" asp-items="@Model.Input.Roles" class=form-select>
                         <option selected disabled>Select Role</option>
                     </select>
                 </div>
@@ -106,7 +106,7 @@
                                 <p>
                                     @foreach (var provider in Model.ExternalLogins)
                                     {
-                                        <button type="submit" class="w-100 btn btn-lg btn-dark" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        <button type="submit" class="w-100 btn btn-lg btn-dark mb-3" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
                                     }
                                 </p>
                             </div>
