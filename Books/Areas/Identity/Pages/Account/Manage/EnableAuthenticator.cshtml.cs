@@ -177,7 +177,7 @@ namespace Books.Areas.Identity.Pages.Account.Manage
             return string.Format(
                 CultureInfo.InvariantCulture,
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("Microsoft.AspNetCore.Identity.UI"),
+                _urlEncoder.Encode("Books"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
