@@ -30,6 +30,7 @@ namespace Books.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public RegisterModel(
             RoleManager<IdentityRole> roleManager,
@@ -38,7 +39,8 @@ namespace Books.Areas.Identity.Pages.Account
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IWebHostEnvironment hostEnvironment)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -48,6 +50,7 @@ namespace Books.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _hostEnvironment = hostEnvironment;
         }
 
         /// <summary>
@@ -155,7 +158,7 @@ namespace Books.Areas.Identity.Pages.Account
                     Text = i,
                     Value = i
                 }).Where(r => r.Value.Equals(Roles.RoleType.Company.ToString()) || r.Value.Equals(Roles.RoleType.Individual.ToString())),
-           
+
                 Companies = companies.Select(i => new SelectListItem
                 {
                     Text = i.Name,
@@ -204,8 +207,35 @@ namespace Books.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId, code, returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // Use external template
+                    var path = _hostEnvironment.WebRootPath
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "templates"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "email"
+                        + Path.DirectorySeparatorChar.ToString()
+                        + "ConfirmAcountRegister.html";
+
+                    var subject = "Verify Your E-mail Address ";
+                    string HtmlBody = "";
+                    using (StreamReader stream = System.IO.File.OpenText(path))
+                    {
+                        HtmlBody = stream.ReadToEnd();
+                    }
+
+                    string Message = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+
+
+                    string messageBody = string.Format(HtmlBody,
+                        subject,
+                        String.Format("{0:dddd, d MMMM yyyy}", DateTime.Now),
+                        user.Email,
+                        user.FirstName,
+                        Message,
+                        callbackUrl
+                        );
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", messageBody);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
