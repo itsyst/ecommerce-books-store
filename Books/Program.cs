@@ -27,6 +27,9 @@ builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Str
 
 // Bind EmailSender settings
 builder.Services.Configure<EmailSenderSettings>(builder.Configuration.GetSection("EmailSenderSettings"));
+
+// Bind Twilio settings
+builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("TwilioSettings"));
  
 // Authentication and authorization
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(/*options => options.SignIn.RequireConfirmedAccount = true*/)

@@ -6,8 +6,11 @@ using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Stripe.Checkout;
 using System.Security.Claims;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
 
 namespace Books.Areas.Customer.Controllers
 {
@@ -23,6 +26,9 @@ namespace Books.Areas.Customer.Controllers
         private readonly IUnitOfWork<OrderHeader> _orderHeader;
         private readonly IUnitOfWork<OrderDetail> _orderDetail;
         private readonly IEmailSender _emailSender;
+        private readonly ILogger<TwilioSettings> _logger;
+
+        private TwilioSettings _twilio { get; set; }
 
         private IConfiguration _configuration { get; }
 
@@ -36,7 +42,9 @@ namespace Books.Areas.Customer.Controllers
             IUnitOfWork<OrderHeader> orderHeader,
             IUnitOfWork<OrderDetail> orderDetail,
             IConfiguration configuration,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ILogger<TwilioSettings> logger,
+            IOptions<TwilioSettings> twilio)
         {
             _product = product;
             _shoppingCart = shoppingCart;
@@ -45,6 +53,8 @@ namespace Books.Areas.Customer.Controllers
             _orderDetail = orderDetail;
             _configuration = configuration;
             _emailSender = emailSender;
+            _logger = logger;
+            _twilio = twilio.Value;
         }
 
         // GET: CartController
@@ -297,7 +307,7 @@ namespace Books.Areas.Customer.Controllers
             await _orderHeader.Entity.UpdateAsync(ShoppingCartViewModel.OrderHeader);
             await _orderHeader.CompleteAsync();
 
- 
+
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
@@ -341,6 +351,22 @@ namespace Books.Areas.Customer.Controllers
             // Remove shopping carts from database.
             await _shoppingCart.Entity.DeleteRangeAsync(shoppingCartsInDb);
             await _shoppingCart.CompleteAsync();
+
+            // Send sms confirmation
+            TwilioClient.Init(_twilio.AccountSid, _twilio.AuthToken);
+            try
+            {
+                var message = MessageResource.Create(
+                    body: "Your order " + orderHeaderInDb.OrderTotal.ToString("c") + " with Id:" + id + " was placed Successfully.",
+                    from: new Twilio.Types.PhoneNumber(_twilio.PhoneNumber),
+                    to: new Twilio.Types.PhoneNumber(orderHeaderInDb.PhoneNumber)
+                    );
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError("Please verify the phone number.", ex);
+            }
 
             return View(id);
         }
