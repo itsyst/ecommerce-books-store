@@ -6,6 +6,7 @@ namespace Books.Utilities
     {
         public enum RoleType
         {
+            SuperAdmin,
             Admin,
             Employee,
             Individual,
@@ -14,6 +15,7 @@ namespace Books.Utilities
 
         public static List<RoleType> GetAllRoles { get; set; } = new List<RoleType>
         {
+             RoleType.SuperAdmin,
              RoleType.Admin,
              RoleType.Employee,
              RoleType.Individual,
