@@ -70,7 +70,7 @@
                                 <label>@Html.DisplayName("Phone")</label>
                             </div>
                             <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                                 {
                                     <input asp-for="OrderHeader.PhoneNumber" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.PhoneNumber" class="text-danger"></span>
@@ -86,7 +86,7 @@
                                 <label>@Html.DisplayName("Address")</label>
                             </div>
                             <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                                 {
                                     <input asp-for="OrderHeader.StreetAddress" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.StreetAddress" class="text-danger"></span>
@@ -102,7 +102,7 @@
                                 <label>@Html.DisplayName("City")</label>
                             </div>
                             <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                                 {
                                     <input asp-for="OrderHeader.City" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
@@ -118,7 +118,7 @@
                                 <label>@Html.DisplayName("State")</label>
                             </div>
                             <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                                 {
                                     <input asp-for="OrderHeader.State" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
@@ -134,7 +134,7 @@
                                 <label>@Html.DisplayName("Zip Code")</label>
                             </div>
                             <div class="col-9">
-                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Admin.ToString()))
+                                @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                                 {
                                     <input asp-for="OrderHeader.PostalCode" type="text" class="form-control" />
                                     <span asp-validation-for="OrderHeader.PostalCode" class="text-danger"></span>
@@ -312,9 +312,9 @@
                         <span class="text-dark">Estimate Arrival Date:</span> &nbsp;@DateTime.Now.AddDays(ArrivalDate.Days).ToShortDateString()  &nbsp;<i class="bi bi-text-right text-dark"></i><i class="bi bi-truck text-dark" style="font-size: 1.5rem;"></i>
                     </p>
 
-                    @if (!User.IsInRole(Roles.RoleType.Admin.ToString()) || !User.IsInRole(Roles.RoleType.Employee.ToString()))
+                    @if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
                     {
-                        <div class="col-12 col-md-2 offset-md-2" hidden>
+                        <div class="col-12 col-md-2 offset-md-2" >
                             <input type="submit" asp-action="Update" class="btn btn-primary form-control my-1" value="Update" />
                         </div>
                     }
