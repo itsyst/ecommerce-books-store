@@ -10,7 +10,7 @@
         </button>
         <div class="navbar-collapse collapse row">
             <ul class="navbar-nav ">
-                @if (User.Identity.IsAuthenticated && User.IsInRole(Roles.RoleType.Admin.ToString()))
+                @if (User.Identity.IsAuthenticated && (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.SuperAdmin.ToString())))
                 {
                     <li class="nav-item dropdown px-2">
                         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Content Manager</a>
@@ -29,7 +29,7 @@
                         </a>
                     </li>
                 }
-                else if (!User.IsInRole(Roles.RoleType.Admin.ToString()) && User.Identity.IsAuthenticated)
+                else if ((!User.IsInRole(Roles.RoleType.Admin.ToString()) || !User.IsInRole(Roles.RoleType.SuperAdmin.ToString())) && User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item px-2">
                         <a class="nav-link" asp-controller="Order" asp-action="Index" asp-area="Admin">
