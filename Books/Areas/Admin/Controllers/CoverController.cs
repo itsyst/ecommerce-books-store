@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class CoverController : Controller
     {
         private readonly IUnitOfWork<Cover> _cover;
@@ -33,6 +33,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: CoverController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Create([Bind("Id,Name")] Cover cover)
         {
             try
@@ -73,6 +74,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: CoverController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Cover cover)
         {
             if (id != cover.Id)
@@ -125,6 +127,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: CoverController/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try

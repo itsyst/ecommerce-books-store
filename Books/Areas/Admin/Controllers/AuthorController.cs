@@ -8,7 +8,7 @@ namespace Books.Controllers
 {
 #pragma warning disable
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class AuthorController : Controller
     {
         private readonly IUnitOfWork<Author> _author;
@@ -37,6 +37,7 @@ namespace Books.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Create([Bind("Id,FullName")] Author author)
         {
             try
@@ -105,6 +106,7 @@ namespace Books.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.  
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,FullName")] Author author)
         {
             if (id != author.Id)
@@ -156,6 +158,7 @@ namespace Books.Controllers
         // POST: Author/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var author = await _author.Entity.GetByIdAsync(id);

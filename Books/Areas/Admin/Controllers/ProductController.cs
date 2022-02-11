@@ -10,7 +10,7 @@ using SixLabors.ImageSharp.Processing;
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork<Product> _product;
@@ -81,6 +81,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: ProductController/Upsert/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Upsert(ProductViewModel model, IFormFile? file)
         {
             if (ModelState.IsValid)

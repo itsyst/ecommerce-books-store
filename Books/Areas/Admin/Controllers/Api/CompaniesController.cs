@@ -2,6 +2,7 @@
 using Books.Domain.Entities;
 using Books.Dtos;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers.Api
@@ -46,6 +47,7 @@ namespace Books.Areas.Admin.Controllers.Api
 
         // PUT /api/products/1
         [HttpPut]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> UpsertProduct(int id, CompanyDto companyDto)
         {
             if (!ModelState.IsValid)
@@ -67,6 +69,7 @@ namespace Books.Areas.Admin.Controllers.Api
 
         // GET: /api/companies/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             Company companyInDb = await _company.Entity.GetFirstOrDefaultAsync(c => c.Id == id);

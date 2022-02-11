@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Books.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin, SuperAdmin")]
     public class CompanyController : Controller
     {
         private readonly IUnitOfWork<Company> _company;
@@ -42,6 +42,7 @@ namespace Books.Areas.Admin.Controllers
         // POST: ProductController/Upsert/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Upsert(Company company)
         {
             if (ModelState.IsValid)

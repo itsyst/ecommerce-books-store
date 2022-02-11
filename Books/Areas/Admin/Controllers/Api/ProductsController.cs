@@ -2,6 +2,7 @@
 using Books.Domain.Entities;
 using Books.Dtos;
 using Books.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books.Areas.Admin.Controllers.Api
@@ -50,6 +51,7 @@ namespace Books.Areas.Admin.Controllers.Api
 
         // PUT /api/products/1
         [HttpPut]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> Upsert(int id, ProductDto productDto)
         {
             if (!ModelState.IsValid)
@@ -71,6 +73,7 @@ namespace Books.Areas.Admin.Controllers.Api
 
         //GET: / api / products/ id
         [HttpDelete("{id}")]
+        [Authorize(Roles = "SuperAdmin")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             Product productInDb = await _product.Entity.GetFirstOrDefaultAsync(p => p.Id == id);

@@ -156,7 +156,7 @@ namespace Books.Areas.Admin.Controllers
 
         // POST: Order/Update
         [HttpPost]
-        [Authorize(Roles = "Admin , Employee")]
+        [Authorize(Roles = "SuperAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update()
         {
