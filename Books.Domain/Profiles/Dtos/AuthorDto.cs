@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 
-namespace Books.Dtos
+namespace Books.Domain.Profiles.Dtos
 {
     [Table("Authors")]
     public class AuthorDto

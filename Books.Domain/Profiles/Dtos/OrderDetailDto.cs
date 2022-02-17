@@ -4,7 +4,7 @@ using Books.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 
-namespace Books.Dtos
+namespace Books.Domain.Profiles.Dtos
 {
     [Table("OrderDetail")]
     public class OrderDetailDto

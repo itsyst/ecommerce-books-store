@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Books.Dtos
+namespace Books.Domain.Profiles.Dtos
 {
     public class CompanyDto
     {

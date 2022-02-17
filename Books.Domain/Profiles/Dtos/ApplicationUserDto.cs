@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Books.Dtos
+namespace Books.Domain.Profiles.Dtos
 {
     public class ApplicationUserDto
     {

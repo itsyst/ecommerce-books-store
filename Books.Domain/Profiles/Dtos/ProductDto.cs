@@ -1,8 +1,8 @@
 ﻿using Books.Domain.Entities;
-using Books.Utilities;
+using Books.Domain.Utilities;
 using System.ComponentModel.DataAnnotations;
 
-namespace Books.Dtos
+namespace Books.Domain.Profiles.Dtos
 {
     public class ProductDto
     {
