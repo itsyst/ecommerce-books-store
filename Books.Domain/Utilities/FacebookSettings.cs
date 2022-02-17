@@ -1,4 +1,4 @@
-﻿namespace Books.Utilities
+﻿namespace Books.Domain.Utilities
 {
     public class FacebookSettings
     {

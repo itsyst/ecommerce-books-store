@@ -1,14 +1,14 @@
 using Books.Data.Persistence;
 using Books.Data.UnitOfWork;
 using Books.Interfaces;
-using Books.Utilities;
+using Books.Domain.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using Stripe;
-using Books.Domain.ViewModels;
+using Books.Domain.Utilities;
 using Books.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);

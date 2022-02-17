@@ -1,4 +1,6 @@
-﻿namespace Books.Utilities
+﻿
+
+namespace Books.Domain.Utilities
 {
     public static class Roles
     {

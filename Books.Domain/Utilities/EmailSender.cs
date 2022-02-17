@@ -5,22 +5,22 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MimeKit;
 
-namespace Books.Utilities
+namespace Books.Domain.Utilities
 {
     public class EmailSender : IEmailSender
     {
-        private IConfiguration _configuration { get; }
+        private IConfiguration Configuration { get; }
         private readonly ILogger<EmailSender> _logger;
         public EmailSender(ILogger<EmailSender> logger, IConfiguration configuration)
         {
-            _configuration = configuration;
+            Configuration = configuration;
             _logger = logger;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             var emailMessage = new MimeMessage();
-            emailMessage.From.Add(MailboxAddress.Parse(_configuration["EmailSenderSettings:From"]));
+            emailMessage.From.Add(MailboxAddress.Parse(Configuration["EmailSenderSettings:From"]));
             emailMessage.To.Add(MailboxAddress.Parse(email));
             emailMessage.Subject = subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = htmlMessage };
@@ -35,9 +35,9 @@ namespace Books.Utilities
             using var client = new SmtpClient();
             try
             {
-                client.Connect(_configuration["EmailSenderSettings:SmtpServer"], int.Parse(_configuration["EmailSenderSettings:Port"]), true);
+                client.Connect(Configuration["EmailSenderSettings:SmtpServer"], int.Parse(Configuration["EmailSenderSettings:Port"]), true);
                 client.AuthenticationMechanisms.Remove("XOAUTH2");
-                client.Authenticate(_configuration["EmailSenderSettings:Username"], _configuration["EmailSenderSettings:Password"]);
+                client.Authenticate(Configuration["EmailSenderSettings:Username"], Configuration["EmailSenderSettings:Password"]);
                 client.Send(mailMessage);
             }
             catch

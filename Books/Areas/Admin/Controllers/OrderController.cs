@@ -4,7 +4,7 @@ using AutoMapper;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using Books.Utilities;
+using Books.Domain.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Stripe;
 using Stripe.Checkout;

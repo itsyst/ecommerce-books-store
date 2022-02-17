@@ -1,4 +1,4 @@
-﻿using Books.Utilities;
+﻿using Books.Domain.Utilities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 

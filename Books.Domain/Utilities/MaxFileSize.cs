@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace Books.Utilities
+namespace Books.Domain.Utilities
 {
 #pragma warning disable CS8603
 #pragma warning disable CS8765  

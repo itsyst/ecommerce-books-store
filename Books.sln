@@ -5,13 +5,11 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books", "Books\Books.csproj", "{253A63E8-69DE-4FF8-B9A7-FFDBBF66C03B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Data", "Books.Data\Books.Data.csproj", "{679ACFFD-99DD-4CBE-8498-833B3418C484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Data", "Books.Data\Books.Data.csproj", "{679ACFFD-99DD-4CBE-8498-833B3418C484}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Domain", "Books.Domain\Books.Domain.csproj", "{56B40967-EEBA-471B-8838-2767788B5119}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Domain", "Books.Domain\Books.Domain.csproj", "{56B40967-EEBA-471B-8838-2767788B5119}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Utilities", "Books.Utilities\Books.Utilities.csproj", "{E420F73D-58A7-48BF-BBCF-CE2C2B6EF912}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Interfaces", "Books.Interfaces\Books.Interfaces.csproj", "{B6423FE5-D660-429C-80E0-643E471F8D4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books.Interfaces", "Books.Interfaces\Books.Interfaces.csproj", "{B6423FE5-D660-429C-80E0-643E471F8D4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{56B40967-EEBA-471B-8838-2767788B5119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56B40967-EEBA-471B-8838-2767788B5119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56B40967-EEBA-471B-8838-2767788B5119}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E420F73D-58A7-48BF-BBCF-CE2C2B6EF912}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E420F73D-58A7-48BF-BBCF-CE2C2B6EF912}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E420F73D-58A7-48BF-BBCF-CE2C2B6EF912}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E420F73D-58A7-48BF-BBCF-CE2C2B6EF912}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6423FE5-D660-429C-80E0-643E471F8D4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6423FE5-D660-429C-80E0-643E471F8D4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6423FE5-D660-429C-80E0-643E471F8D4B}.Release|Any CPU.ActiveCfg = Release|Any CPU

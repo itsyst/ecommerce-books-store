@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Books.Utilities
+namespace Books.Domain.Utilities
 {
     public class Rabat
     {

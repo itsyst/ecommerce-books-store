@@ -1,5 +1,6 @@
-﻿namespace Books.Utilities
+﻿namespace Books.Domain.Utilities
 {
+#pragma warning disable IDE1006 // Naming Styles
     public class GoogleSettings
     {
         public string ClientId { get; set; } = string.Empty;
