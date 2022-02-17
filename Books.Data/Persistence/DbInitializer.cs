@@ -1,6 +1,5 @@
 ﻿using Books.Domain.Entities;
 using Books.Interfaces;
-using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

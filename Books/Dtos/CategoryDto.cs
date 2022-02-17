@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Books.Domain.Entities
+namespace Books.Dtos
 {
 # nullable disable
     public class CategoryDto

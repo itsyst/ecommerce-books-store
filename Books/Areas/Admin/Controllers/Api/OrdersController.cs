@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Books.Domain.Entities;
 using Books.Interfaces;
-using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

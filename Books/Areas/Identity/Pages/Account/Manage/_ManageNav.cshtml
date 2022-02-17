@@ -1,5 +1,5 @@
 ﻿@using Books.Domain.Entities
-@using Books.Models
+@using Books.Domain.Entities;
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

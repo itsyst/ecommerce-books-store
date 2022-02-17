@@ -1,5 +1,4 @@
 ﻿using Books.Domain.Entities;
-using Books.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

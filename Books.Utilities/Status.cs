@@ -1,6 +1,4 @@
-﻿
-
-namespace Books.Utilities
+﻿namespace Books.Utilities
 {
     public static class Status
     {

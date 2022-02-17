@@ -1,10 +1,7 @@
-﻿using Books.Domain.ViewModels;
-using Books.Domain.Entities;
+﻿using Books.Domain.Entities;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-
-
 
 namespace Books.ViewComponents
 {

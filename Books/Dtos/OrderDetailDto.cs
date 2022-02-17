@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Books.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 
-namespace Books.Domain.Entities
+namespace Books.Dtos
 {
     [Table("OrderDetail")]
     public class OrderDetailDto

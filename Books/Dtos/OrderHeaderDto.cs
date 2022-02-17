@@ -1,10 +1,10 @@
-﻿using Books.Models;
+﻿using Books.Domain.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Books.Domain.Entities
+namespace Books.Dtos
 {
     [Table("OrderHeader")]
     public class OrderHeaderDto

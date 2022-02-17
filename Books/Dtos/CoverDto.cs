@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace Books.Domain.Entities
+namespace Books.Dtos
 {
     [Table("Covers")]
     public class CoverDto

@@ -4,7 +4,7 @@
 
 using Books.Domain.Entities;
 using Books.Interfaces;
-using Books.Models;
+using Books.Domain.Entities;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

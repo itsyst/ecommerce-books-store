@@ -1,10 +1,9 @@
-﻿using Books.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Books.Models
+namespace Books.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {

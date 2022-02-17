@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Books.Domain.Entities;
 using Books.Dtos;
-using Books.Models;
 
 namespace Books.Profiles
 {

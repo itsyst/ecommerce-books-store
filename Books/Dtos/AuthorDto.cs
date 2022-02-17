@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Books.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
 
-namespace Books.Domain.Entities
+namespace Books.Dtos
 {
     [Table("Authors")]
     public class AuthorDto

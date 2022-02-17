@@ -2,7 +2,6 @@
 using Books.Domain.ViewModels;
 using AutoMapper;
 using Books.Interfaces;
-using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Books.Utilities;

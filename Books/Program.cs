@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using Stripe;
-using Books.Models;
 using Books.Domain.ViewModels;
+using Books.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 

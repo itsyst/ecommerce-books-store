@@ -1,7 +1,6 @@
 ﻿using Books.Domain.Entities;
 using Books.Domain.ViewModels;
 using Books.Interfaces;
-using Books.Models;
 using Books.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
