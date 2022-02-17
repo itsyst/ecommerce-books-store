@@ -22,22 +22,24 @@ namespace Books.Areas.Admin.Controllers
         private readonly IUnitOfWork<ApplicationUser> _applicationUser;
         private readonly IUnitOfWork<Domain.Entities.Product> _product;
         private readonly IMapper _mapper;
-
-
+ 
         [BindProperty]
         public OrderViewModel OrderViewModel { get; set; }
+        private IConfiguration _configuration { get; }
 
         public OrderController(
             IUnitOfWork<OrderHeader> orderHeader,
             IUnitOfWork<OrderDetail> orderDetail,
             IUnitOfWork<ApplicationUser> applicationUser,
             IUnitOfWork<Domain.Entities.Product> product,
+            IConfiguration configuration,
             IMapper mapper)
         {
             _orderHeader = orderHeader;
             _orderDetail = orderDetail;
             _applicationUser = applicationUser;
             _product = product;
+            _configuration = configuration;
             _mapper = mapper;
         }
 
@@ -84,7 +86,7 @@ namespace Books.Areas.Admin.Controllers
             OrderViewModel.OrderDetail = await _orderDetail.Entity.GetAllAsync(filter: o => o.OrderId == OrderViewModel.OrderHeader.Id, p => p.Product, h => h.OrderHeader);
 
             //stripe settings 
-            var domain = "https://localhost:44376/";
+            var domain = _configuration["StripeSettings:Url"];
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>

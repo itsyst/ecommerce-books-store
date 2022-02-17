@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Books.Domain.Entities;
-using Books.Dtos;
+using Books.Domain.Profiles.Dtos;
 using Books.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
