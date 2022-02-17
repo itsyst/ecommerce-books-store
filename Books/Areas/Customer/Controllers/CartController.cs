@@ -264,7 +264,7 @@ namespace Books.Areas.Customer.Controllers
                 return RedirectToAction("OrderConfirmed", "Cart", new { id = ShoppingCartViewModel.OrderHeader.Id });
 
             //stripe settings 
-            var domain = _configuration["StripeSettings:url"];
+            var domain = _configuration["StripeSettings:Url"];
             var options = new SessionCreateOptions
             {
                 PaymentMethodTypes = new List<string>
