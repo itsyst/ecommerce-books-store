@@ -191,11 +191,12 @@ namespace Books.Areas.Admin.Controllers
 
             return RedirectToAction("Details", "Order", new { id = orderHeaderInDB.Id });
         }
+        
 
 
         // POST: Order/Process
         [HttpPost]
-        [Authorize(Roles = "Admin , Employee")]
+        [Authorize(Roles = "Admin , Employee, SuperAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Process()
         {
@@ -217,7 +218,7 @@ namespace Books.Areas.Admin.Controllers
 
         // POST: Order/Process
         [HttpPost]
-        [Authorize(Roles = "Admin , Employee")]
+        [Authorize(Roles = "Admin , Employee, SuperAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Ship()
         {
@@ -245,7 +246,7 @@ namespace Books.Areas.Admin.Controllers
 
         // POST: Order/Cancel
         [HttpPost]
-        [Authorize(Roles = "Admin , Employee")]
+        [Authorize(Roles = "Admin , Employee, SuperAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel()
         {

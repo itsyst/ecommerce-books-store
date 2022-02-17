@@ -35,8 +35,10 @@ namespace Books.Areas.Admin.Controllers.Api
         public async Task<IActionResult> GetOrders()
         {
             IEnumerable<OrderHeader> orderHeaderInDB;
-            if (User.IsInRole(Roles.RoleType.Admin.ToString()) || User.IsInRole(Roles.RoleType.Employee.ToString()))
-                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(includeProperties: o=>o.ApplicationUser);
+            if (User.IsInRole(Roles.RoleType.Admin.ToString()) ||
+                User.IsInRole(Roles.RoleType.SuperAdmin.ToString()) ||
+                User.IsInRole(Roles.RoleType.Employee.ToString()))
+                orderHeaderInDB = await _orderHeader.Entity.GetAllAsync(includeProperties: o => o.ApplicationUser);
             else
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
