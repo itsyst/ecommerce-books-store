@@ -184,7 +184,7 @@ namespace Books.Areas.Identity.Pages.Account
                 user.City = Input.City;
                 user.State = Input.State;
                 user.PostalCode = Input.PostalCode;
-                if (Input.Role.Equals(Roles.RoleType.Company.ToString()))
+                if (Input.Role is not null && Input.Role.Equals(Roles.RoleType.Company.ToString()))
                 {
                     user.CompanyId = Input.CompanyId;
                 }
