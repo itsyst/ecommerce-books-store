@@ -21,13 +21,15 @@ namespace Books.Data.Persistence
             RoleManager<IdentityRole> roleManager,
             UserManager<ApplicationUser> userManager,
             ApplicationDbContext context,
-            IConfiguration configuration
+            IConfiguration configuration,
+            ILogger<ApplicationDbContext> logger
         )
         {
             _roleManager = roleManager;
             _userManager = userManager;
             _context = context;
             _configuration = configuration;
+            _logger = logger;  
         }
 
         public async void Initialize()
