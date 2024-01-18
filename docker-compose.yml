@@ -1,0 +1,26 @@
+version: '3.4'
+
+networks:
+  dev:
+   driver: bridge
+
+services:
+  ecommerce-books-store:
+   image: docker.io/{...}/ecommerce-books-store:latest 
+   container_name: ecommerce-books-store
+   ports:
+     - 8081:7000
+   volumes:
+     - ./Video.Web/appsettings.json:/app/appsettings.json
+  bookstore-sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: bookstore-sql
+    ports: # not actually needed, because the two services are on the same network.
+      - 1433:1433 
+    environment:
+      - ACCEPT_EULA="..."
+      - SA_PASSWORD="..."
+  restart: unless-stopped
+  build:
+    context: .
+    dockerfile: Dockerfile
